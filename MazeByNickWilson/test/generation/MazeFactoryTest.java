@@ -63,14 +63,19 @@ class MazeFactoryTest {
 	void testAllCellsReachable() {
 		//Tests if every cell in the maze has a valid path to the exit
 		//Goal: Check that every cell in the maze has a valid path to the exit
-		//
+		//Create the maze
+		//Traverse through every cell in the maze
+		//Check the cell's distance from the exit
+		//Check if it has a neighbor with a distance one less than its distance
+		//If every cell meets the above condition, every cell has a route to the exit
+		//If not, fail
 		fail("Not yet implemented");
 	}
-	void testCorrectNumberOfRooms() {
-		//Tests if the correct number of rooms has been generated
-		//
-		fail("Not yet implemented");
-	}
+//	void testCorrectNumberOfRooms() { //May implement later, not sure what a good way to do this is
+//		//Tests if the correct number of rooms has been generated
+//		//Goal: Check that rooms are generating correctly 
+//		fail("Not yet implemented");
+//	}
 	
 
 }

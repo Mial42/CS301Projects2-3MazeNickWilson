@@ -20,7 +20,7 @@ class MazeFactoryTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		myMazeFactory = new MazeFactory(); //Instantiate MyMazeFactory
+		myMazeFactory = new MazeFactory(); //Instantiate myMazeFactory
 	}
 
 	/**
@@ -31,8 +31,30 @@ class MazeFactoryTest {
 	}
 
 	@Test
-	void test() {
+	void testExactlyOneExit() {
+		//Tests if the generated maze has exactly one exit
+		//
 		fail("Not yet implemented");
 	}
+	
+	@Test
+	void testNoRoomsWallsCount() {
+		//Tests if the generated maze has the expected number of walls, given it has no rooms
+		//
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	void testAllCellsReachable() {
+		//Tests if every cell in the maze has a valid path to the exit
+		//
+		fail("Not yet implemented");
+	}
+	void testCorrectNumberOfRooms() {
+		//Tests if the correct number of rooms has been generated
+		//
+		fail("Not yet implemented");
+	}
+	
 
 }

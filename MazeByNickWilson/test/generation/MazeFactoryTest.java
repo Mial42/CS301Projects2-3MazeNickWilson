@@ -33,20 +33,36 @@ class MazeFactoryTest {
 	@Test
 	void testExactlyOneExit() {
 		//Tests if the generated maze has exactly one exit
-		//
+		//Goal: Check if there is exactly one exit
+		//Create the maze
+		//Instantiate a counter for the number of exits
+		//Traverse along the outside of the maze
+		//If there is no wallboard, iterate the counter
+		//If the counter is 0, fail with a 0 message
+		//If the counter is more than 1, fail with a more than 1 message
+		//If the counter is 1, pass
 		fail("Not yet implemented");
 	}
 	
 	@Test
 	void testNoRoomsWallsCount() {
 		//Tests if the generated maze has the expected number of walls, given it has no rooms
-		//
+		//Goal: Check that the number of internal wallboards is the expected number if there are no rooms
+		//If the maze is square, this number is (n-1)^2, where n is the dimension of the maze (eg 3x3 maze has 9 cells)
+		//If the maze is not square, it is (m-1)(n-1), where m is the width and n is the height of the maze
+		//Eg, a 4 x 5 perfect maze should have 3*4 = 12 internal wallboards
+		//Create the maze with no rooms
+		//Instantiate a counter for internal wallboards
+		//Traverse the floorplan row by row, skipping the last cell in each row 
+		//If the cell has a wallboard to the right, iterate the counter
+		//If the counter is equal to the correct number, pass
 		fail("Not yet implemented");
 	}
 	
 	@Test
 	void testAllCellsReachable() {
 		//Tests if every cell in the maze has a valid path to the exit
+		//Goal: Check that every cell in the maze has a valid path to the exit
 		//
 		fail("Not yet implemented");
 	}

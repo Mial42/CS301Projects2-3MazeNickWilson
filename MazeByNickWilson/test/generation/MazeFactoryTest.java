@@ -9,6 +9,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import generation.Order.Builder;
+
 /**
  * @author Nicholas Wilson
  *
@@ -21,6 +23,7 @@ class MazeFactoryTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		myMazeFactory = new MazeFactory(); //Instantiate myMazeFactory
+
 	}
 
 	/**
@@ -35,6 +38,9 @@ class MazeFactoryTest {
 		//Tests if the generated maze has exactly one exit
 		//Goal: Check if there is exactly one exit
 		//Create the maze
+		Order myOrder = new StubOrder(5, Builder.DFS, true, 13);
+		myMazeFactory.order(myOrder);
+		myMazeFactory.waitTillDelivered();
 		//Instantiate a counter for the number of exits
 		//Traverse along the outside of the maze
 		//If there is no wallboard, iterate the counter

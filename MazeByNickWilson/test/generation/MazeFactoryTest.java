@@ -71,6 +71,27 @@ class MazeFactoryTest {
 		//If not, fail
 		fail("Not yet implemented");
 	}
+	
+	@Test
+	void testHasRooms() {
+		//Tests if rooms have generated in the maze
+		//Goal: make sure rooms can generate in the maze
+		//Create a maze with rooms
+		//Traverse through each cell, looking at wallboards
+		//If an internal wallboard is a "border," pass
+		//If not, fail
+	}
+	
+	@Test
+	void testGenerateDifferentSeeds() {
+		//Generate two mazes of the same size with different seeds, check that they're different
+		//Goal: Make sure implementation takes seed into account
+		//Create a maze with a certain seed
+		//Create a maze of the same size, with a different seed
+		//Compare the two
+		//If they're equal, fail
+		//Else, succeed
+	}
 //	void testCorrectNumberOfRooms() { //May implement later, not sure what a good way to do this is
 //		//Tests if the correct number of rooms has been generated
 //		//Goal: Check that rooms are generating correctly 

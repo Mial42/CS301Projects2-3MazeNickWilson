@@ -32,7 +32,7 @@ public class MazeApplication extends JFrame {
 	// for production version it is desirable that we never play the same maze 
 	// so even if the algorithm and skill level are the same, the generated maze should look different
 	// which is achieved with some random initialization
-	private static final boolean DEVELOPMENT_VERSION_WITH_DETERMINISTIC_MAZE_GENERATION = false; //true
+	private static final boolean DEVELOPMENT_VERSION_WITH_DETERMINISTIC_MAZE_GENERATION = true; //true
 
 	/**
 	 * Constructor

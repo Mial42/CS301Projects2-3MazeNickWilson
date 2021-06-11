@@ -3,7 +3,7 @@
  */
 package generation;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,6 @@ class MazeFactoryTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		myMazeFactory = new MazeFactory(); //Instantiate myMazeFactory
 
 	}
 
@@ -38,13 +37,33 @@ class MazeFactoryTest {
 		//Tests if the generated maze has exactly one exit
 		//Goal: Check if there is exactly one exit
 		//Create the maze
-		//Instantiate a counter for the number of exits
+		Maze tempMaze = makeMaze(5, Builder.DFS, false, 10); //Builder can be changed to different builders as needed
+		//Instantiate a counter for the number of exits, record the height and width, create a variable for the floorplan
+		int numExits = 0;
+		Floorplan tempFloorplan = tempMaze.getFloorplan();
+		int height = tempFloorplan.getHeight();//gui.Constants.SKILL_Y[5]; //There should really be some better way to do this
+		int width = tempFloorplan.getWidth();//gui.Constants.SKILL_X[5]; //Maybe add a getHeight and getWidth method to floorplans
 		//Traverse along the outside of the maze
 		//If there is no wallboard, iterate the counter
-		//If the counter is 0, fail with a 0 message
-		//If the counter is more than 1, fail with a more than 1 message
+		for(int x = 0; x < width; x++) {
+			if(tempFloorplan.isExitPosition(x, 0)) { //Top border
+				numExits++;
+			}
+			if(tempFloorplan.isExitPosition(x, height - 1)) { //Bottom border
+				numExits++;
+			}
+		}
+		for(int y = 1; y < height - 1; y++) { //Don't double-count corners
+			if(tempFloorplan.isExitPosition(0, y)){ //Left side
+				numExits++;
+			}
+			if(tempFloorplan.isExitPosition(width - 1, y)){ //Right side
+				numExits++;
+			}
+		}
+		assertEquals(1, numExits);
 		//If the counter is 1, pass
-		fail("Not yet implemented");
+		//Else, fail
 	}
 	
 	@Test
@@ -83,6 +102,7 @@ class MazeFactoryTest {
 		//Traverse through each cell, looking at wallboards
 		//If an internal wallboard is a "border," pass
 		//If not, fail
+		fail("Not yet implemented");
 	}
 	
 	@Test
@@ -94,11 +114,13 @@ class MazeFactoryTest {
 		//Compare the two
 		//If they're equal, fail
 		//Else, succeed
+		fail("Not yet implemented");
 	}
 	
 	private Maze makeMaze(int skill, Builder b, boolean p, int s) {
 		//Makes a Maze with a given skill, builder, perfect status, and seed
 		StubOrder myOrder = new StubOrder(skill, b, p, s);
+		MazeFactory myMazeFactory = new MazeFactory();
 		myMazeFactory.order(myOrder);
 		myMazeFactory.waitTillDelivered();
 		return myOrder.getMaze();

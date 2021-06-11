@@ -701,6 +701,13 @@ public class Floorplan {
 	public boolean hasWall(int x, int y, CardinalDirection dir) {
 		return hasMaskedBitsTrue(x, y, getCWConstantForDirection(dir));
 	}
+	
+	public int getWidth() {
+		return width;
+	}
+	public int getHeight() {
+		return height;
+	}
 	/**
 	 * Tells if the given position has no wallboard in the given direction.
 	 * This is true after cells.initialize() and before deleting this wallboard. 

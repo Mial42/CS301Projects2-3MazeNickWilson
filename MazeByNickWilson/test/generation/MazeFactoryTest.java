@@ -74,11 +74,30 @@ class MazeFactoryTest {
 		//If the maze is not square, it is (m-1)(n-1), where m is the width and n is the height of the maze
 		//Eg, a 4 x 5 perfect maze should have 3*4 = 12 internal wallboards
 		//Create the maze with no rooms
+		Maze tempMaze = makeMaze(5, Builder.DFS, true, 20);
+		Floorplan tempFloorplan = tempMaze.getFloorplan();
+		int height = tempFloorplan.getHeight();
+		int width = tempFloorplan.getWidth();
 		//Instantiate a counter for internal wallboards
-		//Traverse the floorplan row by row, skipping the last cell in each row 
+		int internalWallboards = 0;
+		//Traverse the floorplan row by row, skipping the last cell in each row
 		//If the cell has a wallboard to the right, iterate the counter
+		//Traverse the floorplan column by column, skipping the last cell in each column
+		//If the cell has a wallboard to the bottom, iterate the counter
+		for(int x = 0; x < width; x++){//x is the column; skip the last column
+			for(int y = 0; y < height; y++) {//y is the row, skip the last row
+				if(x < width - 1 && tempFloorplan.hasWall(x, y, CardinalDirection.East)) {
+					internalWallboards++;
+				}
+				if(y < height - 1 && tempFloorplan.hasWall(x, y, CardinalDirection.South)) {
+					internalWallboards++;
+				}
+			}
+		}
+
+		
 		//If the counter is equal to the correct number, pass
-		fail("Not yet implemented");
+		assertEquals((width - 1) * (height - 1), internalWallboards);
 	}
 	
 	@Test

@@ -111,7 +111,7 @@ public class MazeBuilder implements Runnable {
 			reset();
 		}
 	}
-	
+
 	/**
 	 * Reset all fields to initial values
 	 */

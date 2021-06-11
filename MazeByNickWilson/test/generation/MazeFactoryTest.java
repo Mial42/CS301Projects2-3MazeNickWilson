@@ -107,22 +107,46 @@ class MazeFactoryTest {
 		Floorplan tempFloorplan = tempMaze.getFloorplan();
 		int height = tempFloorplan.getHeight();
 		int width = tempFloorplan.getWidth();
+		//Get an array of the distance values
+		int[][] distanceArray = tempMaze.getMazedists().getAllDistanceValues();
 		//Traverse through every cell in the maze
 		//Check the cell's distance from the exit
 		//Check if it has a neighbor with a distance one less than its distance
 		//If every cell meets the above condition or has a distance of 1 (minimum distance), every cell has a route to the exit
-//		for(int x = 0; x < width; x++){//x is the column; skip the last column
-//			for(int y = 0; y < height; y++) {//y is the row, skip the last row
-//				if(x < width - 1 && tempFloorplan.hasWall(x, y, CardinalDirection.East)) {
-//					internalWallboards++;
-//				}
-//				if(y < height - 1 && tempFloorplan.hasWall(x, y, CardinalDirection.South)) {
-//					internalWallboards++;
-//				}
-//			}
-//		}	
-		//If not, fail
-		fail("Not yet implemented");
+		for(int x = 0; x < width; x++){//x is the column; skip the last column
+			for(int y = 0; y < height; y++) {//y is the row, skip the last row
+				int tempDistance = distanceArray[x][y]; //Distance from this cell to the exit
+				if(tempDistance < 1){ //If distance is less then one, there's a problem
+					fail("Distance below minimum");
+				} //If distance is equal to one, you're at the minimum possible distance
+				if(tempDistance > 1) { //If distance is greater than 1, look for a neighbor with a distance one less than yours
+					//4 possible neighbors
+					boolean lesserNeighbor = false; //Temporary boolean recording if one neighbor has a distance ones less than yours
+					if(y > 0 && !tempFloorplan.hasWall(x, y, CardinalDirection.North) && tempDistance - distanceArray[x][y - 1] == 1) {
+						//If conditions checks if North neighbor exists and has a distance one less than my distance
+						lesserNeighbor = true;
+					}
+					else if(y < height - 1 && !tempFloorplan.hasWall(x, y, CardinalDirection.South) && tempDistance - distanceArray[x][y + 1] == 1) { //Else if because if one neighbor is has a distance one less than yours, you can stop
+						//South neighbor
+						lesserNeighbor = true;
+					}
+					else if(x < width - 1 && !tempFloorplan.hasWall(x, y, CardinalDirection.East) && tempDistance - distanceArray[x + 1][y] == 1) {
+						//East neighbor
+						lesserNeighbor = true;
+					}
+					else if(x > 0 && !tempFloorplan.hasWall(x, y, CardinalDirection.West) && tempDistance - distanceArray[x - 1][y] == 1) {
+						//West neighbor
+						lesserNeighbor = true;
+					}
+					else {
+						fail("Has no neighbors");
+					}
+					if(lesserNeighbor == false) {
+						fail("No lesser neighbor");
+					}
+				}
+			}
+		}	
 	}
 	
 	@Test

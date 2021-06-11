@@ -701,10 +701,15 @@ public class Floorplan {
 	public boolean hasWall(int x, int y, CardinalDirection dir) {
 		return hasMaskedBitsTrue(x, y, getCWConstantForDirection(dir));
 	}
-	
+	/**
+	 * @return width
+	 */
 	public int getWidth() {
 		return width;
 	}
+	/**
+	 * @return height
+	 */
 	public int getHeight() {
 		return height;
 	}

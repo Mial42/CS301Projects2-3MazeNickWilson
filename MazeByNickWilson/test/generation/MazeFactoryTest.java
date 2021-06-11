@@ -111,11 +111,16 @@ class MazeFactoryTest {
 		//Check the cell's distance from the exit
 		//Check if it has a neighbor with a distance one less than its distance
 		//If every cell meets the above condition or has a distance of 1 (minimum distance), every cell has a route to the exit
-		for(int x = 0; x < width; x++){
-			for(int y = 0; y < height; y++) {
-				
-			}
-		}		
+//		for(int x = 0; x < width; x++){//x is the column; skip the last column
+//			for(int y = 0; y < height; y++) {//y is the row, skip the last row
+//				if(x < width - 1 && tempFloorplan.hasWall(x, y, CardinalDirection.East)) {
+//					internalWallboards++;
+//				}
+//				if(y < height - 1 && tempFloorplan.hasWall(x, y, CardinalDirection.South)) {
+//					internalWallboards++;
+//				}
+//			}
+//		}	
 		//If not, fail
 		fail("Not yet implemented");
 	}
@@ -125,10 +130,16 @@ class MazeFactoryTest {
 		//Tests if rooms have generated in the maze
 		//Goal: make sure rooms can generate in the maze
 		//Create a maze with rooms
-		//Traverse through each cell, looking at wallboards
-		//If an internal wallboard is a "border," pass
-		//If not, fail
-		fail("Not yet implemented");
+		Maze tempMaze = makeMaze(5, Builder.DFS, false, 20);
+		Floorplan tempFloorplan = tempMaze.getFloorplan();
+		int height = tempFloorplan.getHeight();
+		int width = tempFloorplan.getWidth();
+		if(width >= 12 && height >= 12) { //If the maze is small, no rooms may be generated correctly
+			//Check if the floorplan overlaps with a room at some point
+			assertTrue(tempFloorplan.areaOverlapsWithRoom(1, 1, width - 2, height - 2)); 
+			//Cover the entire floorplan except for the cells touching the border, since those will always return true
+		}
+
 	}
 	
 	@Test

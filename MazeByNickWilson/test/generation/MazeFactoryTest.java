@@ -38,9 +38,6 @@ class MazeFactoryTest {
 		//Tests if the generated maze has exactly one exit
 		//Goal: Check if there is exactly one exit
 		//Create the maze
-		Order myOrder = new StubOrder(5, Builder.DFS, true, 13);
-		myMazeFactory.order(myOrder);
-		myMazeFactory.waitTillDelivered();
 		//Instantiate a counter for the number of exits
 		//Traverse along the outside of the maze
 		//If there is no wallboard, iterate the counter
@@ -97,6 +94,14 @@ class MazeFactoryTest {
 		//Compare the two
 		//If they're equal, fail
 		//Else, succeed
+	}
+	
+	private Maze makeMaze(int skill, Builder b, boolean p, int s) {
+		//Makes a Maze with a given skill, builder, perfect status, and seed
+		StubOrder myOrder = new StubOrder(skill, b, p, s);
+		myMazeFactory.order(myOrder);
+		myMazeFactory.waitTillDelivered();
+		return myOrder.getMaze();
 	}
 //	void testCorrectNumberOfRooms() { //May implement later, not sure what a good way to do this is
 //		//Tests if the correct number of rooms has been generated

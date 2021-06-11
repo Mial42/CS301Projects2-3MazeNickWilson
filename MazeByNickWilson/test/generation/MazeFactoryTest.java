@@ -93,9 +93,7 @@ class MazeFactoryTest {
 					internalWallboards++;
 				}
 			}
-		}
-
-		
+		}		
 		//If the counter is equal to the correct number, pass
 		assertEquals((width - 1) * (height - 1), internalWallboards);
 	}
@@ -105,10 +103,19 @@ class MazeFactoryTest {
 		//Tests if every cell in the maze has a valid path to the exit
 		//Goal: Check that every cell in the maze has a valid path to the exit
 		//Create the maze
+		Maze tempMaze = makeMaze(5, Builder.DFS, false, 20);
+		Floorplan tempFloorplan = tempMaze.getFloorplan();
+		int height = tempFloorplan.getHeight();
+		int width = tempFloorplan.getWidth();
 		//Traverse through every cell in the maze
 		//Check the cell's distance from the exit
 		//Check if it has a neighbor with a distance one less than its distance
-		//If every cell meets the above condition, every cell has a route to the exit
+		//If every cell meets the above condition or has a distance of 1 (minimum distance), every cell has a route to the exit
+		for(int x = 0; x < width; x++){
+			for(int y = 0; y < height; y++) {
+				
+			}
+		}		
 		//If not, fail
 		fail("Not yet implemented");
 	}
@@ -129,11 +136,14 @@ class MazeFactoryTest {
 		//Generate two mazes of the same size with different seeds, check that they're different
 		//Goal: Make sure implementation takes seed into account
 		//Create a maze with a certain seed
+		//Perfect maze so rooms don't mess things up, since rooms might create different mazes with the same seed
+		Maze maze10 = makeMaze(5, Builder.DFS, true, 10); 
 		//Create a maze of the same size, with a different seed
-		//Compare the two
+		Maze maze20 = makeMaze(5, Builder.DFS, true, 20);
+		//Compare the floorplans of the two
 		//If they're equal, fail
 		//Else, succeed
-		fail("Not yet implemented");
+		assertFalse(maze10.getFloorplan().equals(maze20.getFloorplan()));
 	}
 	
 	private Maze makeMaze(int skill, Builder b, boolean p, int s) {

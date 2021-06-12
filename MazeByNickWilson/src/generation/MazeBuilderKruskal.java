@@ -27,7 +27,7 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 		while(!edges.isEmpty()) {
 			//Within that loop:
 			//Remove the next edge from the list
-			Wallboard currentEdge = edges.remove(random.nextIntWithinInterval(0, edges.size()));//Loop based on the seed.
+			Wallboard currentEdge = edges.remove(random.nextIntWithinInterval(0, edges.size() - 1));//Loop based on the seed.
 			//Calculate the endpoint of the edge (for instance, if the edge has x coord 2, y coord 2, and points south, it's connected to x coord 2, y coord 3)
 			int currX = currentEdge.getX();
 			int currY = currentEdge.getY();

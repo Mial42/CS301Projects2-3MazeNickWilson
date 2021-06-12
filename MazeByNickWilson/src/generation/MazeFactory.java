@@ -50,6 +50,7 @@ public class MazeFactory implements Factory {
 		case Kruskal:
 			builder = new MazeBuilderKruskal();
 			buildOrder();
+			break;
 		default:
 			System.out.println("MazeFactory.order: missing implementation for requested algorithm: " + order.getBuilder());
 			return false;

@@ -140,7 +140,7 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 		
 		/**
 		* Are we connected to this tree?
-		* @param A Tree argument to test this Tree's connection to
+		* @param tree		A Tree argument to test this Tree's connection to
 		* @return True if this Tree is connected to the argument Tree, that is, we have the same root. 
 		*/
 		public boolean connected(Tree tree) {
@@ -150,7 +150,7 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 		/**
 		* Connects two trees, this one and the argument Tree, by setting the argument Tree's parent
 		* to this Tree's parent.
-		* @param a Tree to connect this Tree to.
+		* @param tree		a Tree to connect this Tree to.
 		*/
 		public void connect(Tree tree) {
 			tree.root().setParent(this);
@@ -158,7 +158,7 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 		
 		/**
 		* Set the parent of this Tree to the argument Tree
-		* @param a Tree to set as this Tree's parent
+		* @param parent		a Tree to set as this Tree's parent
 		*/
 		public void setParent(Tree parent) {
 			this._parent = parent;

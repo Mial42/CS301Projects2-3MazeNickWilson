@@ -16,7 +16,6 @@ import generation.Order.Builder;
  *
  */
 class MazeFactoryTest {
-	private MazeFactory myMazeFactory; //MazeFactory to run tests on
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -31,7 +30,13 @@ class MazeFactoryTest {
 	@AfterEach
 	void tearDown() throws Exception {
 	}
-
+	/**
+	 * Tests if the generated maze has exactly one exit
+	 * Goal: Check if there is exactly one exit
+	 * Create the maze, instantiate a counter for the number of exits, record the height and width, create a variable for the floorplan.
+	 * Traverse along the outside of the maze. If there is no wallboard, iterate the counter.
+	 * If the counter is 1, pass.
+	 */
 	@Test
 	void testExactlyOneExit() {
 		//Tests if the generated maze has exactly one exit
@@ -65,7 +70,18 @@ class MazeFactoryTest {
 		//If the counter is 1, pass
 		//Else, fail
 	}
-	
+	/**
+	 * Tests if the generated maze has the expected number of walls, given it has no rooms
+	 * Goal: Check that the number of internal wallboards is the expected number if there are no rooms
+	 * Also tests that no rooms are generated when they shouldn't be, since if that's the case, fewer then expected wallboards would show up
+	 * The number of generated walls should be (m-1)*(n-1), where m is the width and n is the height of the maze
+	 * Strategy: 
+	 * 1) Create the maze with no rooms
+	 * 2) Instantiate a counter for internal wallboards
+	 * 3) Traverse the floorplan cell by cell
+	 * 4) If a cell is not in the rightmost column and has a wall to the right, or it is not in the bottom row and has a wall to the bottom, iterate the counter
+	 * 5) If the counter is equal to the correct number, pass
+	 */
 	@Test
 	void testNoRoomsWallsCount() {
 		//Tests if the generated maze has the expected number of walls, given it has no rooms
@@ -97,7 +113,14 @@ class MazeFactoryTest {
 		//If the counter is equal to the correct number, pass
 		assertEquals((width - 1) * (height - 1), internalWallboards);
 	}
-	
+	/**
+	 * Tests if every cell in the maze has a valid path to the exit
+	 * Goal: Check that every cell in the maze has a valid path to the exit
+	 * Create a Maze, traverse through every cell in the Maze, checking that every cell in the Maze that is not
+	 * one unit from the exit (since that is the minimum possible distance)
+	 * has at least one neighbor (defined as a bordering cell with no wall between them) 
+	 * that is one unit closer to the exit then it is. 
+	 */
 	@Test
 	void testAllCellsReachable() {
 		//Tests if every cell in the maze has a valid path to the exit
@@ -148,7 +171,12 @@ class MazeFactoryTest {
 			}
 		}	
 	}
-	
+	/**
+	 * Tests if rooms have generated in the maze
+	 * Goal: make sure rooms can generate in the maze
+	 * Create a Maze with rooms (not perfect, large enough to consistently spawn at least one room).
+	 * Check using Floorplan's areaOverlapsWithRoom method that there is a room within the Maze.
+	 */
 	@Test
 	void testHasRooms() {
 		//Tests if rooms have generated in the maze
@@ -165,7 +193,11 @@ class MazeFactoryTest {
 		}
 
 	}
-	
+	/**
+	 * Generate two mazes of the same size with different seeds, check that they're different.
+	 * Goal: Make sure implementation takes seed into account, and doesn't produce the same Maze each time.
+	 * Perfect maze so rooms don't mess things up, since rooms might create different mazes with the same seed.
+	 */
 	@Test
 	void testGenerateDifferentSeeds() {
 		//Generate two mazes of the same size with different seeds, check that they're different
@@ -180,7 +212,13 @@ class MazeFactoryTest {
 		//Else, succeed
 		assertFalse(maze10.getFloorplan().equals(maze20.getFloorplan()));
 	}
-	
+	/** 
+	 * Makes and returns a Maze with a given skill, builder, perfect status, and seed
+	 * @param skill		An integer that corresponds to the difficulty of the created Maze
+	 * @param b			A Builder object that can be DFS, Prim, or Kruskal
+	 * @param p			A boolean reprenting perfect status
+	 * @param s			An integer that serves as the seed for the Maze
+	*/
 	private Maze makeMaze(int skill, Builder b, boolean p, int s) {
 		//Makes a Maze with a given skill, builder, perfect status, and seed
 		StubOrder myOrder = new StubOrder(skill, b, p, s);
@@ -189,11 +227,5 @@ class MazeFactoryTest {
 		myMazeFactory.waitTillDelivered();
 		return myOrder.getMaze();
 	}
-//	void testCorrectNumberOfRooms() { //May implement later, not sure what a good way to do this is
-//		//Tests if the correct number of rooms has been generated
-//		//Goal: Check that rooms are generating correctly 
-//		fail("Not yet implemented");
-//	}
-	
 
 }

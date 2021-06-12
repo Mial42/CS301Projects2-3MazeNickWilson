@@ -8,7 +8,7 @@ import java.util.TreeSet;
 public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 	public MazeBuilderKruskal() {
 		super();
-		System.out.println("MazeBuilderKruskaluses Kruskal's algorithm to generate maze.");
+		System.out.println("MazeBuilderKruskal uses Kruskal's algorithm to generate maze.");
 	}
 	
 	

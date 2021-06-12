@@ -252,6 +252,8 @@ public class MazeBuilderKruskalTest extends MazeFactoryTest {
 		//Goal: Generate a Small, non-perfect Maze
 		//Hopefully, it will try and fail to generate rooms. 
 		//Designed to increase coverage on MazeBuilder.java.
+		//To make sure that nothing  obviouslybreaks when there's a failed attempt to place a room.
+		//Not testing anything about the maze itself.
 		Maze maze0 = makeMaze(0, false, 10);
 		Maze maze1 = makeMaze(1, false, 10);
 	}

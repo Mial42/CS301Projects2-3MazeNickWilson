@@ -17,7 +17,7 @@ public class MazeBuilderKruskalTest extends MazeFactoryTest {
 		//Tests if the generated maze has exactly one exit
 		//Goal: Check if there is exactly one exit
 		//Create the maze
-		Maze tempMaze = makeMaze(5, false, 10); 
+		Maze tempMaze = makeMaze(5, false, 15); 
 		//Instantiate a counter for the number of exits, record the height and width, create a variable for the floorplan
 		int numExits = 0;
 		Floorplan tempFloorplan = tempMaze.getFloorplan();
@@ -245,6 +245,15 @@ public class MazeBuilderKruskalTest extends MazeFactoryTest {
 		//If they're equal, fail
 		//Else, succeed
 		assertFalse(maze10.getFloorplan().equals(maze20.getFloorplan()));
+	}
+	
+	@Test
+	void testGenerateSmallMazeWithRooms() {
+		//Goal: Generate a Small, non-perfect Maze
+		//Hopefully, it will try and fail to generate rooms. 
+		//Designed to increase coverage on MazeBuilder.java.
+		Maze maze0 = makeMaze(0, false, 10);
+		Maze maze1 = makeMaze(1, false, 10);
 	}
 	
 	private Maze makeMaze(int skill, boolean p, int s) { //No builder required, since I'm only testing Kruskal

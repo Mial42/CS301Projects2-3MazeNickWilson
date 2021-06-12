@@ -20,14 +20,31 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 	@Override
 	protected void generatePathways() {
 		//Create an array of arrays of Trees. Each Tree contains one node, so there should be width * height nodes in the set.
+		Tree[][] nodeTrees = createListOfSetsOfNodes();
 		//Create a list of all possible edges in the Maze
-		//Given that a node is defined as an x,y pair, there can be 2, 3, or 4 possible edges per node
-		//Then, loop until the list of edges is empty. Loop based on the seed.
-		//Within that loop:
-		//Remove the next edge from the list
-		//Calculate the endpoint of the edge (for instance, if the edge has x coord 2, y coord 2, and points south, it's connected to x coord 2, y coord 3)
-		//If the two nodes are not in the same set, merge their sets and remove the appropriate wall from the maze
-		//Either way, discard the edge
+		ArrayList<Wallboard> edges = createListOfPossibleEdges();
+		//Then, loop until the list of edges is empty. 
+		while(!edges.isEmpty()) {
+			//Within that loop:
+			//Remove the next edge from the list
+			Wallboard currentEdge = edges.remove(random.nextIntWithinInterval(0, edges.size()));//Loop based on the seed.
+			//Calculate the endpoint of the edge (for instance, if the edge has x coord 2, y coord 2, and points south, it's connected to x coord 2, y coord 3)
+			int currX = currentEdge.getX();
+			int currY = currentEdge.getY();
+			int neighX = currentEdge.getNeighborX();
+			int neighY = currentEdge.getNeighborY();
+
+			Tree currTree = nodeTrees[currX][currY]; //Create references to the two relevant Trees
+			Tree neighTree = nodeTrees[neighX][neighY];
+			if(!currTree.connected(neighTree) && floorplan.canTearDown(currentEdge)) { //If the two nodes are not in the same Tree, merge their Trees and remove the appropriate wall from the maze
+				//Make sure it can be torn down; Shouldn't be an issue but worth checking
+				currTree.connect(neighTree); //Merge trees
+				floorplan.deleteWallboard(currentEdge);//Delete the wallboard
+
+			}
+			//Either way, discard the edge
+		}
+
 		//Once all edges are gone, there should be one Tree of all nodes
 		//Done
 	}
@@ -40,7 +57,21 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 		//Use Wallboards to represent edges
 		//Create all possible edges by going to the right for edges between horizontal nodes
 		//And down for edges between vertical nodes
-		return null; //TODO code this
+		ArrayList<Wallboard> tempArrayList = new ArrayList<>(height*(width - 1) + width * (height - 1));
+		for(int x = 0; x < width; x++){//x is the column; skip the last column to avoid the borders
+			for(int y = 0; y < height; y++) {//y is the row, skip the last row to avoid the borders
+				if(x < width - 1) { //If not in the last column
+					Wallboard tempWallboard = new Wallboard(x, y, CardinalDirection.East);
+					tempArrayList.add(tempWallboard);
+				}
+				if(y < height - 1) { //If not in the last row
+					Wallboard tempWallboard = new Wallboard(x, y, CardinalDirection.South);
+					tempArrayList.add(tempWallboard);
+				}
+				
+			}
+		}		
+		return tempArrayList; 
 	}
 	/**
 	 * Nodes are represented as x, y coordinates. In the array of arrays of Trees that this method returns, a Tree at
@@ -50,8 +81,13 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 	 */
 	private Tree[][] createListOfSetsOfNodes(){
 		//Loop through all possible x and y coordinate combinations, creating a new set each time with an array
-		//Representing that 
-		return null;
+		Tree[][] tempTrees = new Tree[width][height];
+		for(int x = 0; x < width; x++) {
+			for(int y = 0; y < height; y++) {
+				tempTrees[x][y] = new Tree();
+			}
+		}
+		return tempTrees;
 	}
 	//Note from Nicholas Wilson: I did not make this Tree class. I copied it directly from here: https://github.com/psholtz/Puzzles/blob/master/mazes/maze-04/java/Kruskal.java
 	//It is quite similar to the Ruby tree class from Buckblog (https://weblog.jamisbuck.org/2011/1/3/maze-generation-kruskal-s-algorithm.html). Rather than reproduce this tree myself, I decided to copy-paste the Java version from this source.

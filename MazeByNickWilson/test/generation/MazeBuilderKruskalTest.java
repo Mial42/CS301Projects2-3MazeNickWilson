@@ -46,10 +46,45 @@ public class MazeBuilderKruskalTest extends MazeFactoryTest {
 		//Else, fail
 	}
 	
+	@Test
+	void testExactlyOneExitNoRooms() {
+		//Tests if the generated maze has exactly one exit even with no rooms
+		//Goal: Check if there is exactly one exit
+		//Create the maze
+		Maze tempMaze = makeMaze(5, true, 10); 
+		//Instantiate a counter for the number of exits, record the height and width, create a variable for the floorplan
+		int numExits = 0;
+		Floorplan tempFloorplan = tempMaze.getFloorplan();
+		int height = tempFloorplan.getHeight();//gui.Constants.SKILL_Y[5]; //There should really be some better way to do this
+		int width = tempFloorplan.getWidth();//gui.Constants.SKILL_X[5]; //Maybe add a getHeight and getWidth method to floorplans
+		//Traverse along the outside of the maze
+		//If there is no wallboard, iterate the counter
+		for(int x = 0; x < width; x++) {
+			if(tempFloorplan.isExitPosition(x, 0)) { //Top border
+				numExits++;
+			}
+			if(tempFloorplan.isExitPosition(x, height - 1)) { //Bottom border
+				numExits++;
+			}
+		}
+		for(int y = 1; y < height - 1; y++) { //Don't double-count corners
+			if(tempFloorplan.isExitPosition(0, y)){ //Left side
+				numExits++;
+			}
+			if(tempFloorplan.isExitPosition(width - 1, y)){ //Right side
+				numExits++;
+			}
+		}
+		assertEquals(1, numExits);
+		//If the counter is 1, pass
+		//Else, fail
+	}
+	
 	@Test @Override
 	void testNoRoomsWallsCount() {
 		//Tests if the generated maze has the expected number of walls, given it has no rooms
 		//Goal: Check that the number of internal wallboards is the expected number if there are no rooms
+		//Also tests that no rooms are generated when they shouldn't be, since if that's the case, fewer then expected wallboards would show up
 		//If the maze is square, this number is (n-1)^2, where n is the dimension of the maze (eg 3x3 maze has 9 cells)
 		//If the maze is not square, it is (m-1)(n-1), where m is the width and n is the height of the maze
 		//Eg, a 4 x 5 perfect maze should have 3*4 = 12 internal wallboards
@@ -84,6 +119,57 @@ public class MazeBuilderKruskalTest extends MazeFactoryTest {
 		//Goal: Check that every cell in the maze has a valid path to the exit
 		//Create the maze
 		Maze tempMaze = makeMaze(5, false, 20);
+		Floorplan tempFloorplan = tempMaze.getFloorplan();
+		int height = tempFloorplan.getHeight();
+		int width = tempFloorplan.getWidth();
+		//Get an array of the distance values
+		int[][] distanceArray = tempMaze.getMazedists().getAllDistanceValues();
+		//Traverse through every cell in the maze
+		//Check the cell's distance from the exit
+		//Check if it has a neighbor with a distance one less than its distance
+		//If every cell meets the above condition or has a distance of 1 (minimum distance), every cell has a route to the exit
+		for(int x = 0; x < width; x++){//x is the column; skip the last column
+			for(int y = 0; y < height; y++) {//y is the row, skip the last row
+				int tempDistance = distanceArray[x][y]; //Distance from this cell to the exit
+				if(tempDistance < 1){ //If distance is less then one, there's a problem
+					fail("Distance below minimum");
+				} //If distance is equal to one, you're at the minimum possible distance
+				if(tempDistance > 1) { //If distance is greater than 1, look for a neighbor with a distance one less than yours
+					//4 possible neighbors
+					boolean lesserNeighbor = false; //Temporary boolean recording if one neighbor has a distance ones less than yours
+					if(y > 0 && !tempFloorplan.hasWall(x, y, CardinalDirection.North) && tempDistance - distanceArray[x][y - 1] == 1) {
+						//If conditions checks if North neighbor exists and has a distance one less than my distance
+						lesserNeighbor = true;
+					}
+					else if(y < height - 1 && !tempFloorplan.hasWall(x, y, CardinalDirection.South) && tempDistance - distanceArray[x][y + 1] == 1) { //Else if because if one neighbor is has a distance one less than yours, you can stop
+						//South neighbor
+						lesserNeighbor = true;
+					}
+					else if(x < width - 1 && !tempFloorplan.hasWall(x, y, CardinalDirection.East) && tempDistance - distanceArray[x + 1][y] == 1) {
+						//East neighbor
+						lesserNeighbor = true;
+					}
+					else if(x > 0 && !tempFloorplan.hasWall(x, y, CardinalDirection.West) && tempDistance - distanceArray[x - 1][y] == 1) {
+						//West neighbor
+						lesserNeighbor = true;
+					}
+					else {
+						fail("Has no neighbors");
+					}
+					if(lesserNeighbor == false) {
+						fail("No lesser neighbor");
+					}
+				}
+			}
+		}	
+	}
+	
+	@Test
+	void testAllCellsReachableNoRooms() {
+		//Tests if every cell in the maze has a valid path to the exit
+		//Goal: Check that every cell in the maze has a valid path to the exit even with no rooms
+		//Create the maze
+		Maze tempMaze = makeMaze(5, true, 20);
 		Floorplan tempFloorplan = tempMaze.getFloorplan();
 		int height = tempFloorplan.getHeight();
 		int width = tempFloorplan.getWidth();

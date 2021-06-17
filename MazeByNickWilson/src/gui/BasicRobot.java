@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.Dictionary;
+
 import generation.CardinalDirection;
 /**
  * A BasicRobot is a simple robot. 
@@ -42,44 +44,78 @@ import generation.CardinalDirection;
  * a robotdriver class that operates robot. This class uses DistanceSensors as well.
  * Cooperates with the program at large through a controller.
  * 
+ * Note that interface methods do not have a Javadoc comment.
  * @author Nicholas Wilson
  *
  */
 public class BasicRobot implements Robot {
-
+	/**
+	 * A controller that holds the maze to be explored.
+	 */
+	private Controller myController;
+	/**
+	 * The direction the Robot is facing.
+	 */
+	private CardinalDirection myCardinalDirection;
+	/**
+	 * An integer representing the current battery level of the Robot.
+	 */
+	private int batteryLevel;
+	/**
+	 * A DistanceSensor corresponding to forwards
+	 */
+	private DistanceSensor forwardsSensor;
+	/**
+	 * A DistanceSensor corresponding to backwards
+	 */
+	private DistanceSensor backwardsSensor;
+	/**
+	 * A DistanceSensor corresponding to left
+	 */
+	private DistanceSensor leftSensor;
+	/**
+	 * A DistanceSensor corresponding to right
+	 */
+	private DistanceSensor rightSensor;
+	/**
+	 * An int that tells you how far the Robot has travelled since it was last reset
+	 */
+	private int myOdometer;
+	//Note that interface methods do not have a Javadoc comment.
 	@Override
 	public void setController(Controller controller) {
-		// TODO Auto-generated method stub
+		//Set myController to controller
 
 	}
 
 	@Override
 	public void addDistanceSensor(DistanceSensor sensor, Direction mountedDirection) {
-		// TODO Auto-generated method stub
-
+		//Add the Direction to the DistanceSensor
+		//Set the appropriate DistanceSensor field to sensor
 	}
 
 	@Override
 	public int[] getCurrentPosition() throws Exception {
-		// TODO Auto-generated method stub
+		//Return the current position of the robot as [x, y] coords
+		//Get the current position through controller
 		return null;
 	}
 
 	@Override
 	public CardinalDirection getCurrentDirection() {
-		// TODO Auto-generated method stub
+		//return myCardinalDirection
 		return null;
 	}
 
 	@Override
 	public float getBatteryLevel() {
-		// TODO Auto-generated method stub
+		//return batteryLevel
 		return 0;
 	}
 
 	@Override
 	public void setBatteryLevel(float level) {
-		// TODO Auto-generated method stub
+		//set batteryLevel to level
 
 	}
 
@@ -145,27 +181,29 @@ public class BasicRobot implements Robot {
 
 	@Override
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		//Return the corresponding DistanceSensor's distance to the nearest obstacle
 		return 0;
 	}
 
 	@Override
 	public boolean canSeeThroughTheExitIntoEternity(Direction direction) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		//Return true if the corresponding DistanceSensor's distance
+		//To the nearest obstacle is infinite
 		return false;
 	}
 
 	@Override
 	public void startFailureAndRepairProcess(Direction direction, int meanTimeBetweenFailures, int meanTimeToRepair)
 			throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		// TODO Will be implemented in Project 4. 
+		//Throw UnsupportedOperationException
 
 	}
 
 	@Override
 	public void stopFailureAndRepairProcess(Direction direction) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-
+		// TODO Will be implemented in Project 4. 
+		//Throw UnsupportedOperationException
 	}
 
 }

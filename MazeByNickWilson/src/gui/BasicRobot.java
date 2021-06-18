@@ -1,7 +1,5 @@
 package gui;
 
-import java.util.Dictionary;
-
 import generation.CardinalDirection;
 /**
  * A BasicRobot is a simple robot. 
@@ -54,10 +52,6 @@ public class BasicRobot implements Robot {
 	 */
 	private Controller myController;
 	/**
-	 * The direction the Robot is facing.
-	 */
-	private CardinalDirection myCardinalDirection;
-	/**
 	 * An integer representing the current battery level of the Robot.
 	 */
 	private int batteryLevel;
@@ -81,6 +75,11 @@ public class BasicRobot implements Robot {
 	 * An int that tells you how far the Robot has travelled since it was last reset
 	 */
 	private int myOdometer;
+	/**
+	 * A boolean that tells you if you've stopped for a non-battery related reason
+	 * For instance, if you tried to move through a wall, or jump out of the maze
+	 */
+	private Boolean amStopped;
 	//Note that interface methods do not have a Javadoc comment.
 	@Override
 	public void setController(Controller controller) {
@@ -103,7 +102,8 @@ public class BasicRobot implements Robot {
 
 	@Override
 	public CardinalDirection getCurrentDirection() {
-		//return myCardinalDirection
+		//return the CardinalDirection I am facing
+		//Get this through the Controller
 		return null;
 	}
 
@@ -121,61 +121,69 @@ public class BasicRobot implements Robot {
 
 	@Override
 	public float getEnergyForFullRotation() {
-		// TODO Auto-generated method stub
+		// Return 12 as instructed
 		return 0;
 	}
 
 	@Override
 	public float getEnergyForStepForward() {
-		// TODO Auto-generated method stub
+		// Return 4 as instructed
 		return 0;
 	}
 
 	@Override
 	public int getOdometerReading() {
-		// TODO Auto-generated method stub
+		// Return odometer
 		return 0;
 	}
 
 	@Override
 	public void resetOdometer() {
-		// TODO Auto-generated method stub
+		// Set odometer to 0
 
 	}
 
 	@Override
 	public void rotate(Turn turn) {
-		// TODO Auto-generated method stub
+		//Change myCardinalDirection to the appropriate value
+		//Based on current direction and turn
+		//So turning left from north heading means facing west
 
 	}
 
 	@Override
 	public void move(int distance) {
-		// TODO Auto-generated method stub
-
+		//Keep moving forward step-by-step until
+		//I run out of energy or run out of room (there's a wall in front me)
+		//OR I've travelled the appropriate distance
 	}
 
 	@Override
 	public void jump() {
-		// TODO Auto-generated method stub
-
+		//Change either my x or my y coordinate by 1/-1, depending on my direction
+		//North: Change y by -1
+		//South: Change y by 1
+		//East: Change x by 1
+		//West: Change x by -1
+		//Don't care about walls
+		//If it would make me jump out of the Maze, set amStopped to true
 	}
 
 	@Override
 	public boolean isAtExit() {
-		// TODO Auto-generated method stub
+		//Return true if I'm at the exit as determined by the underlying Maze
 		return false;
 	}
 
 	@Override
 	public boolean isInsideRoom() {
-		// TODO Auto-generated method stub
+		//Return true if I'm in a room as determined by the underlying Maze
 		return false;
 	}
 
 	@Override
 	public boolean hasStopped() {
-		// TODO Auto-generated method stub
+		//Return true if my energy is 0 or if the amStopped boolean is true
 		return false;
 	}
 

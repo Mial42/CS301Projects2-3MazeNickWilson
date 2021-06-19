@@ -65,20 +65,20 @@ public class BasicSensor implements DistanceSensor {
 
 	@Override
 	public float getEnergyConsumptionForSensing() {
-		// TODO Auto-generated method stub
-		return 0;
+		// Return 1 as instructed
+		return 1;
 	}
 
 	@Override
 	public void startFailureAndRepairProcess(int meanTimeBetweenFailures, int meanTimeToRepair)
 			throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 
 	}
 
 	@Override
 	public void stopFailureAndRepairProcess() throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 
 	}
 

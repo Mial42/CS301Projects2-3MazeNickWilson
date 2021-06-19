@@ -58,10 +58,18 @@ public class WallFollower implements RobotDriver {
 	public boolean drive1Step2Exit() throws Exception {
 		//If at the exit, rotate to face the exit and return false
 		if(myRobot.isAtExit()) {
+			//Exit is either left, right, or forward
+			//Don't need to do anything if it's forward
+			if(myRobot.canSeeThroughTheExitIntoEternity(Direction.LEFT)) {
+				myRobot.rotate(Turn.LEFT);
+			}
+			else if(myRobot.canSeeThroughTheExitIntoEternity(Direction.RIGHT)) {
+				myRobot.rotate(Turn.RIGHT);
+			}
 			return false;
 		}
 		//If out of power, throw an Exception
-		if(myRobot.getBatteryLevel() < 4) {
+		if(myRobot.getBatteryLevel() < 4) { //If not at the exit and power is less than 4, it's game over
 			throw new Exception();
 		}
 		//If not:

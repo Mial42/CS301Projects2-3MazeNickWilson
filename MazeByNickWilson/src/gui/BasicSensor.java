@@ -1,5 +1,7 @@
 package gui;
 
+import org.junit.jupiter.params.provider.NullEnum;
+
 import generation.CardinalDirection;
 import generation.Maze;
 import gui.Robot.Direction;
@@ -43,23 +45,137 @@ import gui.Robot.Direction;
  *
  */
 public class BasicSensor implements DistanceSensor {
-
+	/**
+	 * A Maze that gives us access to the Floorplan allowing us to see where the wall are
+	 */
+	private Maze myMaze;
+	/**
+	 * A relative direction (left/right/forwards/backwards) telling you how on the Robot the sensor is mounted
+	 */
+	private Direction myDirection;
+	/**
+	 * Boolean saying whether or not the sensor is functional
+	 */
+	private boolean functional = true;
+	
 	@Override
 	public int distanceToObstacle(int[] currentPosition, CardinalDirection currentDirection, float[] powersupply)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		//Throw IllegalArgumentException
+		if(currentDirection == null || powersupply == null || currentPosition == null //Any argument is null
+				|| currentPosition[0] < 0 || currentPosition [0] >= myMaze.getWidth() //Illegal Width Argument
+				|| currentPosition[1] < 0 || currentPosition[1] >= myMaze.getHeight()) { //Illegal height argument
+			throw new IllegalArgumentException();
+		}
+		if(powersupply[0] < 0) {//Illegal powersupply
+			throw new IndexOutOfBoundsException();
+		}
+		if(!functional) { //Not functional
+			throw new Exception("SensorError");
+		}
+		if(powersupply[0] < getEnergyConsumptionForSensing()) { //Not enough power
+			throw new Exception("PowerFailure");
+		}
+		int x = currentPosition[0];
+		int y = currentPosition[1];
+		//This sensor is pointed North when:
+		//Robot is North and Sensor is Forwards
+		//Robot is South and Sensor is Backwards
+		//Robot is East and Sensor is Left
+		//Robot is West and Sensor is Right
+		if(currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.FORWARD)
+				|| currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.BACKWARD)
+				|| currentDirection.equals(CardinalDirection.East) && myDirection.equals(Direction.LEFT)
+				||currentDirection.equals(CardinalDirection.West) && myDirection.equals(Direction.RIGHT)) {
+			//When the Sensor is pointed North, the distance is my Y coord - the nearest wall's Y coord
+			int wallY = y;
+			while(myMaze.getFloorplan().hasNoWall(x, wallY, CardinalDirection.North)) { //Walk North to find the nearest
+				//wall to the North
+				wallY--;
+				if(myMaze.getFloorplan().isExitPosition(x, wallY)) { //If at the exit, return Integer.MAX
+					return Integer.MAX_VALUE;
+				}
+			}
+			//When you have the nearest wall to the North, return the my Y coord- the wall's Y coord 
+			return y - wallY;
+		}
+		//This sensor is pointed South when:
+		//Robot is South and Sensor is Forwards
+		//Robot is North and Sensor is Backwards
+		//Robot is West and Sensor is Left
+		//Robot is East and Sensor is Right
+		if(currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.FORWARD)
+				|| currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.BACKWARD)
+				|| currentDirection.equals(CardinalDirection.West) && myDirection.equals(Direction.LEFT)
+				||currentDirection.equals(CardinalDirection.East) && myDirection.equals(Direction.RIGHT)) {
+			//When the Sensor is pointed South, the distance is the nearest wall's Y coord - my y coord
+			int wallY = y;
+			while(myMaze.getFloorplan().hasNoWall(x, wallY, CardinalDirection.South)) { //Walk South to find the nearest
+				//wall to the South
+				wallY++;
+				if(myMaze.getFloorplan().isExitPosition(x, wallY)) { //If at the exit, return Integer.MAX
+					return Integer.MAX_VALUE;
+				}
+			}
+			//When you have the nearest wall to the North, return the the wall's Y coord - my y coord
+			return wallY - y;
+		}
+		//This sensor is pointed East when:
+		//Robot is East and Sensor is Forwards
+		//Robot is West and Sensor is Backwards
+		//Robot is North and Sensor is Left
+		//Robot is South and Sensor is Right
+		if(currentDirection.equals(CardinalDirection.East) && myDirection.equals(Direction.FORWARD)
+				|| currentDirection.equals(CardinalDirection.West) && myDirection.equals(Direction.BACKWARD)
+				|| currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.LEFT)
+				||currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.RIGHT)) {
+			//When the Sensor is pointed East, the distance is the nearest wall's X coord - my X corrd
+			int wallX = x;
+			while(myMaze.getFloorplan().hasNoWall(wallX, y, CardinalDirection.East)) { //Walk East to find the nearest
+				//wall to the East
+				wallX++;
+				if(myMaze.getFloorplan().isExitPosition(wallX, y)) { //If at the exit, return Integer.MAX
+					return Integer.MAX_VALUE;
+				}
+			}
+			//When you have the nearest wall to the East, return the wall's X coord - my X coord
+			return wallX - x;
+		}
+		//This sensor is pointed East when:
+		//Robot is West and Sensor is Forwards
+		//Robot is East and Sensor is Backwards
+		//Robot is South and Sensor is Left
+		//Robot is North and Sensor is Right
+		if(currentDirection.equals(CardinalDirection.West) && myDirection.equals(Direction.FORWARD)
+				|| currentDirection.equals(CardinalDirection.East) && myDirection.equals(Direction.BACKWARD)
+				|| currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.LEFT)
+				||currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.RIGHT)) {
+			//When the Sensor is pointed West, the distance is my X coord - nearest wall's x coord
+			int wallX = x;
+			while(myMaze.getFloorplan().hasNoWall(wallX, y, CardinalDirection.West)) { //Walk West to find the nearest
+				//wall to the West
+				wallX--;
+				if(myMaze.getFloorplan().isExitPosition(wallX, y)) { //If at the exit, return Integer.MAX
+					return Integer.MAX_VALUE;
+				}
+			}
+			//When you have the nearest wall to the West, return my X coord - the wall's x coord
+			return x - wallX;
+		}
+		return -1;//Should never happen
 	}
 
 	@Override
 	public void setMaze(Maze maze) {
-		// TODO Auto-generated method stub
+		//Set myMaze to maze
+		myMaze = maze;
 
 	}
 
 	@Override
 	public void setSensorDirection(Direction mountedDirection) {
-		// TODO Auto-generated method stub
+		//Set myDirection to mountedDirection
+		myDirection = mountedDirection;
 
 	}
 

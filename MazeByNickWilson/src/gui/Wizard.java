@@ -9,42 +9,18 @@ import generation.Maze;
  * @author Nicholas Wilson
  *
  */
-public class Wizard implements RobotDriver {
-
-	@Override
-	public void setRobot(Robot r) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setMaze(Maze maze) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean drive2Exit() throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
+public class Wizard extends WallFollower implements RobotDriver {
 
 	@Override
 	public boolean drive1Step2Exit() throws Exception {
-		// TODO Auto-generated method stub
+		//If at the exit, rotate to face the exit and return false
+		//If out of power, throw an Exception
+		//If not:
+		//Find the closest neighbor to the exit
+		//Move to that neighbor
+		//Return true
 		return false;
 	}
 
-	@Override
-	public float getEnergyConsumption() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getPathLength() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 }

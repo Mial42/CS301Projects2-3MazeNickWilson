@@ -9,41 +9,58 @@ import generation.Maze;
  * @author Nicholas Wilson
  *
  */
+//Note: Interface methods do not have Javadoc comments
 public class WallFollower implements RobotDriver {
-
+	/**
+	 * The Robot the class is driving.
+	 */
+	protected Robot myRobot;
+	/**
+	 * The Maze the class is driving through.
+	 */
+	protected Maze myMaze;
 	@Override
 	public void setRobot(Robot r) {
-		// TODO Auto-generated method stub
+		//Set myRobot to r
 
 	}
 
 	@Override
 	public void setMaze(Maze maze) {
-		// TODO Auto-generated method stub
+		// Set myMaze to maze
 
 	}
 
 	@Override
 	public boolean drive2Exit() throws Exception {
-		// TODO Auto-generated method stub
+		//While I'm not at the exit and I have power
+		//Take a step towards the exit
+		//If out of power, throw an exception
+		//If I've driven in a loop (heuristic: I have travelled more than twice the total cells in the Maze)
+		//Return false
 		return false;
 	}
 
 	@Override
 	public boolean drive1Step2Exit() throws Exception {
-		// TODO Auto-generated method stub
+		//If at the exit, rotate to face the exit and return false
+		//If out of power, throw an Exception
+		//If not:
+		//Rotate left if possible, step forward, return true
+		//Else, step forward, return true
+		//Else, rotate right and return false
 		return false;
 	}
 
 	@Override
 	public float getEnergyConsumption() {
-		// TODO Auto-generated method stub
+		//Return the original energy (2000 by default) minus the robot's current level
 		return 0;
 	}
 
 	@Override
 	public int getPathLength() {
-		// TODO Auto-generated method stub
+		//Return the robot's odometer reading
 		return 0;
 	}
 

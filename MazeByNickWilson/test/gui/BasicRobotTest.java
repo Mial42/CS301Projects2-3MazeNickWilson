@@ -94,15 +94,28 @@ public class BasicRobotTest {
 	 * Tests that the move() method works as expected. This means that
 	 * it must correctly move the parameter distance if there is no obstacle in front of it.
 	 * If there is an obstacle in front of it, it should stop.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testMove() {
+	public void testMove() throws Exception {
 		//Rotate until not facing a wall
+		while(testRobot.distanceToObstacle(Direction.FORWARD) < 1) {
+			testRobot.rotate(Turn.RIGHT); 
+		}
 		//Get the distance to the nearest forward wall
-		//Move less than that distance
+		int originalDistance = testRobot.distanceToObstacle(Direction.FORWARD);
+		int[] originalPos = testRobot.getCurrentPosition();
+		//Move that distance
+		testRobot.move(originalDistance);
 		//Check that current position has changed the expected amount
+		int[] newPos = testRobot.getCurrentPosition();
+		assertTrue(Math.abs(originalPos[0] - newPos[0]) + Math.abs(originalPos[1] - newPos[1]) == 
+				originalDistance);
 		//Move the full original distance forward. This should collide with the wall.
+		testRobot.move(originalDistance);
 		//Test that you stopped in front of the wall and the amStopped boolean is true.
+		assertTrue(testRobot.distanceToObstacle(Direction.FORWARD) == 0);
+		assertTrue(testRobot.hasStopped());
 	}
 	/**
 	 * Tests that the rotate method correctly changes the robot's

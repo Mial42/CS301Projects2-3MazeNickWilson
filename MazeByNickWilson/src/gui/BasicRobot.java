@@ -83,6 +83,21 @@ public class BasicRobot implements Robot {
 	 */
 	private Boolean amStopped;
 	//Note that interface methods do not have a Javadoc comment.
+	/**
+	 * Constructor that sets the fields to basic values and adds distanceSensors to each side of the robot
+	 * @param Controller that will be this Robot's controller
+	 */
+	public BasicRobot(Controller controller) {
+		myOdometer = 0;
+		amStopped = false;
+		batteryLevel = 0;
+		myController = controller;
+		
+		addDistanceSensor(new BasicSensor(), Direction.FORWARD);
+		addDistanceSensor(new BasicSensor(), Direction.BACKWARD);
+		addDistanceSensor(new BasicSensor(), Direction.LEFT);
+		addDistanceSensor(new BasicSensor(), Direction.RIGHT);
+	}
 	@Override
 	public void setController(Controller controller) {
 		//Set myController to controller
@@ -95,15 +110,23 @@ public class BasicRobot implements Robot {
 		//Set the appropriate DistanceSensor field to sensor
 		if(mountedDirection.equals(Direction.FORWARD)) {
 			forwardsSensor = sensor;
+			forwardsSensor.setSensorDirection(Direction.FORWARD);
+			forwardsSensor.setMaze(myController.getMazeConfiguration());
 		}
 		if(mountedDirection.equals(Direction.LEFT)) {
 			leftSensor = sensor;
+			leftSensor.setSensorDirection(Direction.LEFT);
+			leftSensor.setMaze(myController.getMazeConfiguration());
 		}
 		if(mountedDirection.equals(Direction.RIGHT)) {
 			rightSensor = sensor;
+			rightSensor.setSensorDirection(Direction.RIGHT);
+			rightSensor.setMaze(myController.getMazeConfiguration());
 		}
 		if(mountedDirection.equals(Direction.BACKWARD)) {
 			backwardsSensor = sensor;
+			backwardsSensor.setSensorDirection(Direction.BACKWARD);
+			backwardsSensor.setMaze(myController.getMazeConfiguration());
 		}
 	}
 

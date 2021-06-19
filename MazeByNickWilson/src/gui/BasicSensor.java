@@ -57,7 +57,11 @@ public class BasicSensor implements DistanceSensor {
 	 * Boolean saying whether or not the sensor is functional
 	 */
 	private boolean functional = true;
-	
+	/**
+	 * Default constructor
+	 */
+	public BasicSensor() {
+	}
 	@Override
 	public int distanceToObstacle(int[] currentPosition, CardinalDirection currentDirection, float[] powersupply)
 			throws Exception {

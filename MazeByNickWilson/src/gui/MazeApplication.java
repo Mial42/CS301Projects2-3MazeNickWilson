@@ -138,10 +138,10 @@ public class MazeApplication extends JFrame {
 		    String msg = null; // message for feedback
 		    //Tells the controller to create a robotDriver
 		    if("Wizard".equalsIgnoreCase(robot)) {
-				 result.setRobotAndDriver(new BasicRobot(), new Wizard());
+				 result.setRobotAndDriver(new BasicRobot(result), new Wizard());
 		    }
 		    else if("Wallfollower".equalsIgnoreCase(robot)) {
-				 result.setRobotAndDriver(new BasicRobot(), new WallFollower());
+				 result.setRobotAndDriver(new BasicRobot(result), new WallFollower());
 		    }
 		    // can decide if user repeatedly plays the same mazes or 
 		    // if mazes are different each and every time

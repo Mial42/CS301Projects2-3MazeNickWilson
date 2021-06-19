@@ -22,13 +22,13 @@ public class WallFollower implements RobotDriver {
 	@Override
 	public void setRobot(Robot r) {
 		//Set myRobot to r
-
+		myRobot = r;
 	}
 
 	@Override
 	public void setMaze(Maze maze) {
 		// Set myMaze to maze
-
+		myMaze = maze;
 	}
 
 	@Override
@@ -55,13 +55,13 @@ public class WallFollower implements RobotDriver {
 	@Override
 	public float getEnergyConsumption() {
 		//Return the original energy (2000 by default) minus the robot's current level
-		return 0;
+		return (2000 - myRobot.getBatteryLevel());
 	}
 
 	@Override
 	public int getPathLength() {
 		//Return the robot's odometer reading
-		return 0;
+		return myRobot.getOdometerReading();
 	}
 
 }

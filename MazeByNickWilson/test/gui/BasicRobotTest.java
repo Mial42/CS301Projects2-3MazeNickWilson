@@ -58,10 +58,15 @@ public class BasicRobotTest {
 	@Test
 	public void testBatteryLevel() {
 		//Check that battery level is currently 2000
+		assertEquals(2000, testRobot.getBatteryLevel(), 0);
 		//Set the battery level to 500
+		testRobot.setBatteryLevel(500);
 		//Check that the battery level is 500
+		assertEquals(500, testRobot.getBatteryLevel(), 0);
 		//Check that the energy for a full rotation is 12
+		assertEquals(12, testRobot.getEnergyForFullRotation(), 0);
 		//Check that the energy for a move is 4
+		assertEquals(4, testRobot.getEnergyForStepForward(), 0);
 	}
 	/**
 	 * Check that the odometer of a starting robot is 0. Move once.

@@ -243,7 +243,7 @@ public class BasicRobot implements Robot {
 				amStopped = true;
 				return;
 			}
-			if(getBatteryLevel() < getEnergyForStepForward()) { //If there's not enough energy to contine, stop and end method
+			if(getBatteryLevel() < getEnergyForStepForward()) { //If there's not enough energy to continue, stop and end method
 				amStopped = true;
 				return;
 			}

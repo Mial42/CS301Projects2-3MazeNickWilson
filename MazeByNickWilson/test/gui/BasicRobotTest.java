@@ -149,14 +149,29 @@ public class BasicRobotTest {
 	 * Then jump forward. Check that your new position is what you expected.
 	 * For instance, if you jump forward while facing North, your new y coordinate should
 	 * be one less then before.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testJump() {
+	public void testJump() throws Exception {
 		//Move forward until you hit a non-border wall.
-		//If you hit a border wall, rotate and try again, until you hit a non-border wall
+		while(testRobot.distanceToObstacle(Direction.FORWARD) > 0) {
+			testRobot.move(1);
+		}
+		//System.out.println(testController.getCurrentPosition()[0]); //0
+		//System.out.println(testController.getCurrentPosition()[1]); //1
+		//System.out.println(testController.getCurrentDirection().toString());//East
+		//Deterministically, the robot as at (0, 1) facing East, which is not a border.
 		//Record current position and direction
 		//Jump
+		testRobot.jump();
 		//Check that new position is what you expect based on the direction
+		//Should be at (1, 1) now
+		assertEquals(1, testRobot.getCurrentPosition()[0], 0); //X coord 1
+		assertEquals(1, testRobot.getCurrentPosition()[1], 0); //y coord 1
+		//Still facing East
+		assertEquals(testRobot.getCurrentDirection(), CardinalDirection.East);
+		//There is a wall 0 spaces behind
+		assertEquals(0, testRobot.distanceToObstacle(Direction.BACKWARD), 0);
 	}
 	/**
 	 * Tests if the hasStopped() method correctly returns true
@@ -167,7 +182,9 @@ public class BasicRobotTest {
 	@Test
 	public void testHasStopped() {
 		//Move the robot 200 steps
+		testRobot.move(200);
 		//Check if hasStopped() returns true
+		assertTrue(testRobot.hasStopped());
 	}
 	/**
 	 * Tests that the distanceToObstacle() method correctly decrements by one
@@ -180,11 +197,20 @@ public class BasicRobotTest {
 	public void testDistanceToObstacle() {
 		//Check that there's no obstacle immediately in front
 		//If that's not true, rotate CW until it is.
+		while(testRobot.distanceToObstacle(Direction.FORWARD) < 1) {
+			testRobot.rotate(Turn.RIGHT); 
+		}
+		int originalDistance = testRobot.distanceToObstacle(Direction.FORWARD);
 		//Check the forward distance.
+		testRobot.move(1);
 		//Move forward by one, check that the forward distance has dropped by one.
+		assertEquals(originalDistance - 1, testRobot.distanceToObstacle(Direction.FORWARD), 0);
 		//Record the backwards distance.
+		int backwardsDistance = testRobot.distanceToObstacle(Direction.BACKWARD);
 		//Rotate the robot 180 degrees.
+		testRobot.rotate(Turn.AROUND);
 		//Check that the forward distance equals the recorded backwards distance.
+		assertEquals(backwardsDistance, testRobot.distanceToObstacle(Direction.FORWARD));
 	}
 	/**
 	 * 

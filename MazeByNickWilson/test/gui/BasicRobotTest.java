@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import generation.Maze;
 import generation.MazeFactory;
 import generation.StubOrder;
+import gui.Robot.Direction;
+import gui.Robot.Turn;
 import generation.Order.Builder;
 
 public class BasicRobotTest {
@@ -27,11 +29,11 @@ public class BasicRobotTest {
 		//Will use skill 0, since I'm just smoke-testing robot methods.
 		//Get a reference to the robot.
 		testController = new Controller();
-		testRobot = new BasicRobot(testController);
-		testController.setRobotAndDriver(testRobot, null);
 		testController.start();
 		testController.turnOffGraphics(); //No graphics to save time
 		testController.switchFromGeneratingToPlaying(makeTestMaze());
+		testRobot = new BasicRobot(testController);
+		testController.setRobotAndDriver(testRobot, null);
 	}
 	/**
 	 * Check that position and direction return some non-null value equal to that returned by the controller's methods.
@@ -75,10 +77,18 @@ public class BasicRobotTest {
 	@Test
 	public void testOdometerReadings() {
 		//Check that the odometer of a starting robot is 0.
+		assertEquals(0, testRobot.getOdometerReading(), 0);
+		while(testRobot.distanceToObstacle(Direction.FORWARD) == 0) {//If you start facing a wall
+			testRobot.rotate(Turn.RIGHT); //turn until not facing a wall
+		}
 		//Move once.
+		testRobot.move(1);
 		//Check that the odometer is 1. 
+		assertEquals(1, testRobot.getOdometerReading(), 0);
 		//Reset the odometer. 
+		testRobot.resetOdometer();
 		//Check that it is 0.
+		assertEquals(0, testRobot.getOdometerReading(), 0);
 	}
 	/**
 	 * Tests that the move() method works as expected. This means that

@@ -248,6 +248,7 @@ public class BasicRobot implements Robot {
 				return;
 			}
 			setBatteryLevel(batteryLevel - getEnergyForStepForward());
+			myOdometer++;
 			myController.keyDown(UserInput.UP, 0);
 			distance--;
 			distanceToWall--;

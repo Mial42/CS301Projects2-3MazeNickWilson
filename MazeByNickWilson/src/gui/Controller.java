@@ -111,6 +111,24 @@ public class Controller {
         seed = 13; // default
         deterministic = true; // default
     }
+//    /**
+//     * Test controller that doesn't have graphics and uses Prim's algorithm
+//     * @param test (a boolean that serves to differentiate it from the default constructor. Value doesn't matter)
+//     */
+//    public Controller(Boolean test) {
+//    	states = new State[4];
+//        states[0] = new StateTitle();
+//        states[1] = new StateGenerating();
+//        states[2] = new StatePlaying();
+//        states[3] = new StateWinning();
+//        currentState = states[0];
+//        panel = null; //This is the main change
+//        fileName = null;
+//        builder = Order.Builder.Prim; // Prim's instead of DFS
+//        perfect = false; // default
+//        seed = 13; // default
+//        deterministic = true; // default
+//    }
     
     public void setFileName(String fileName) {
         this.fileName = fileName;

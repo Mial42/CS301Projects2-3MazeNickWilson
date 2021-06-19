@@ -7,27 +7,47 @@ import static org.junit.Assert.*;
  */
 
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import generation.Maze;
+import generation.MazeFactory;
+import generation.StubOrder;
+import generation.Order.Builder;
+
 public class BasicRobotTest {
+	private Controller testController;
+	private Robot testRobot;
 	/**
 	 * Set up a controller and the appropriate robot
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
-		//Instantiate a controller. Will use Prim because I know it works.
+		//Instantiate a controller. Will use DFS because I know it works.
 		//Will use skill 0, since I'm just smoke-testing robot methods.
 		//Get a reference to the robot.
+		testController = new Controller();
+		testRobot = new BasicRobot(testController);
+		testController.setRobotAndDriver(testRobot, null);
+		testController.start();
+		testController.turnOffGraphics(); //No graphics to save time
+		testController.switchFromGeneratingToPlaying(makeTestMaze());
 	}
 	/**
-	 * Check that position and direction return some non-null value.
+	 * Check that position and direction return some non-null value equal to that returned by the controller's methods.
 	 * Combined with the move and rotate tests, this provided a gut check about
 	 * whether or not the method is actually working.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testPositionAndDirection() {
+	public void testPositionAndDirection() throws Exception {
 		//Check that position is not null
-		//Check that direction is not null
+		assertTrue(testRobot.getCurrentPosition() != null);
+		assertTrue(testRobot.getCurrentPosition()[0] == testController.getCurrentPosition()[0] 
+				&& testRobot.getCurrentPosition()[1] == testController.getCurrentPosition()[1] );
+		//Check that direction is not null and equals the direction recorded by the controller
+		assertTrue(testRobot.getCurrentDirection() != null);
+		assertTrue(testRobot.getCurrentDirection().equals(testController.getCurrentDirection()));
 	}
 	/**
 	 * Check that the battery level for a new robot is correctly 2000, 
@@ -125,5 +145,16 @@ public class BasicRobotTest {
 		//Record the backwards distance.
 		//Rotate the robot 180 degrees.
 		//Check that the forward distance equals the recorded backwards distance.
+	}
+	/**
+	 * 
+	 * @return a skill level 0 perfect maze with seed 13 and the DFS builder for testing purposes
+	 */
+	private Maze makeTestMaze() {
+		StubOrder myOrder = new StubOrder(0, Builder.DFS, true, 13);
+		MazeFactory myMazeFactory = new MazeFactory();
+		myMazeFactory.order(myOrder);
+		myMazeFactory.waitTillDelivered();
+		return myOrder.getMaze();
 	}
 }

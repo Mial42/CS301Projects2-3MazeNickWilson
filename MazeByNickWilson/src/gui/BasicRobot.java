@@ -90,7 +90,7 @@ public class BasicRobot implements Robot {
 	public BasicRobot(Controller controller) {
 		myOdometer = 0;
 		amStopped = false;
-		batteryLevel = 0;
+		batteryLevel = 2000;
 		myController = controller;
 		
 		addDistanceSensor(new BasicSensor(), Direction.FORWARD);

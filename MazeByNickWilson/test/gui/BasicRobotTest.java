@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import generation.CardinalDirection;
 import generation.Maze;
 import generation.MazeFactory;
 import generation.StubOrder;
@@ -123,13 +124,24 @@ public class BasicRobotTest {
 	 * Record the robot's original orientation, then try each rotation, ensuring
 	 * that the recorded and expected new CardinalDirection after each time is correct.
 	 * For instance, if turning around from North, cardinal direction should be South.
+	 * Also checks that the turns correctly deduct 3/6 energy for quarter/half turns.
 	 */
 	@Test
 	public void testRotate() {
 		//Record the current CardinalDirection
+		CardinalDirection originalDirection = testRobot.getCurrentDirection();
 		//Rotate left. Check that the new CardinalDirection is the expected one
+		testRobot.rotate(Turn.LEFT);
+		assertEquals(1997, testRobot.getBatteryLevel(), 0);
+		assertEquals(originalDirection, testRobot.getCurrentDirection().oppositeDirection().rotateClockwise());
 		//Rotate right. Check that the new CardinalDirection is the original one
+		testRobot.rotate(Turn.RIGHT);
+		assertEquals(1994, testRobot.getBatteryLevel(), 0);
+		assertEquals(originalDirection, testRobot.getCurrentDirection());
 		//Rotate around. Check that the new CardinalDirection is opposite the original one.
+		testRobot.rotate(Turn.AROUND);
+		assertEquals(1988, testRobot.getBatteryLevel(), 0);
+		assertEquals(originalDirection, testRobot.getCurrentDirection().oppositeDirection());
 	}
 	/**
 	 * Tests that the Jump method correctly jumps over walls.

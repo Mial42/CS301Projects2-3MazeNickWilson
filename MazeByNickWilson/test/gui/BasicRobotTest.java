@@ -186,14 +186,36 @@ public class BasicRobotTest {
 	 * Tests if the hasStopped() method correctly returns true
 	 * after doing an illegal move, by having the robot attempt to
 	 * move 200 cells forwards, which is impossible unless facing the exit.
+	 * Check that attempting to move or rotate while stopped
+	 * does nothing.
 	 * Must have a functional move() method for this to work.
+	 * Also checks if the resetStopped() method works.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testHasStopped() {
+	public void testHasStopped() throws Exception {
 		//Move the robot 200 steps
 		testRobot.move(200);
 		//Check if hasStopped() returns true
 		assertTrue(testRobot.hasStopped());
+		int[] currPosition = testRobot.getCurrentPosition();
+		CardinalDirection curDirection = testRobot.getCurrentDirection();
+		//Verify that turning and moving does nothing while stopped
+		testRobot.rotate(Turn.LEFT);
+		testRobot.move(1);
+		assertEquals(curDirection, testRobot.getCurrentDirection());
+		assertArrayEquals(currPosition, testRobot.getCurrentPosition());
+		testRobot.rotate(Turn.RIGHT);
+		testRobot.move(1);
+		assertEquals(curDirection, testRobot.getCurrentDirection());
+		assertArrayEquals(currPosition, testRobot.getCurrentPosition());
+		testRobot.rotate(Turn.AROUND);
+		testRobot.move(1);
+		assertEquals(curDirection, testRobot.getCurrentDirection());
+		assertArrayEquals(currPosition, testRobot.getCurrentPosition());
+		//Reset stopped and verify that it is now false
+		((BasicRobot)testRobot).resetStopped();
+		assertFalse(testRobot.hasStopped());
 	}
 	/**
 	 * Tests that the distanceToObstacle() method correctly decrements by one
@@ -216,10 +238,24 @@ public class BasicRobotTest {
 		assertEquals(originalDistance - 1, testRobot.distanceToObstacle(Direction.FORWARD), 0);
 		//Record the backwards distance.
 		int backwardsDistance = testRobot.distanceToObstacle(Direction.BACKWARD);
+		//Record the left distance
+		int leftDistance = testRobot.distanceToObstacle(Direction.LEFT);
 		//Rotate the robot 180 degrees.
 		testRobot.rotate(Turn.AROUND);
 		//Check that the forward distance equals the recorded backwards distance.
 		assertEquals(backwardsDistance, testRobot.distanceToObstacle(Direction.FORWARD));
+		//Assert that the right distance equals the recorded left distance
+		assertEquals(leftDistance, testRobot.distanceToObstacle(Direction.RIGHT));
+	}
+	/**
+	 * Makes sure there are no false positives with respect to being at the Exit
+	 * or inside a room at game start (since in the test Maze, you don't start
+	 * at the exit or inside a room).
+	 */
+	@Test
+	public void testNoFalseRoomExitPositives() {
+		assertFalse(testRobot.isAtExit());
+		assertFalse(testRobot.isInsideRoom());
 	}
 	/**
 	 * 

@@ -1,7 +1,7 @@
 package gui;
 
 import gui.Constants.UserInput;
-
+import gui.Robot.Direction;
 import generation.CardinalDirection;
 import generation.Floorplan;
 import generation.Maze;
@@ -105,6 +105,11 @@ public class StatePlaying extends DefaultState {
         else {
         	// else: dry-run without graphics, most likely for testing purposes
         	printWarning();
+        }
+        //If running the game automatically (Controller has a Robot and a RobotDriver)
+        //Run the game automatically
+        if(controller.getRobot() != null && controller.getDriver() != null) {
+        	playGameAutomatically();
         }
     }
     /**
@@ -245,6 +250,32 @@ public class StatePlaying extends DefaultState {
     			((float) mazeConfig.getMazedists().getMaxDistance());
     }
     /**
+     * This method finishes setting up a Robot and a RobotDriver if running in automated mode. 
+     * It then calls the RobotDriver method drive2Exit.
+     * Should only be called if playing the game with a Robot and RobotDriver
+     */
+    private void playGameAutomatically() {
+    	//Finish setting up the Robot and RobotDriver so they work
+    	control.getDriver().setRobot(control.getRobot());//Make sure the Robot and Driver are connected
+    	control.getDriver().setMaze(mazeConfig); //Set the RobotDriver's Maze correctly
+    	//Add new BasicSensors to the robot
+    	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.FORWARD);
+    	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.BACKWARD);
+    	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.LEFT);
+    	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.RIGHT);
+    	//Toggle the map for easier viewing
+    	keyDown(UserInput.TOGGLELOCALMAP, 0);
+    	keyDown(UserInput.TOGGLEFULLMAP, 0);
+    	keyDown(UserInput.TOGGLESOLUTION, 0);
+    	//Play the game
+    	try{
+    		control.getDriver().drive2Exit();
+    	}catch (Exception e) { //Exception happens if you run out of power
+			//If you run out of power, swap to the winning state
+    		control.switchFromPlayingToWinning(control.getRobot().getOdometerReading());
+		}
+    }
+    /**
      * Prints the warning about a missing panel only once
      */
     boolean printedWarning = false;
@@ -254,6 +285,7 @@ public class StatePlaying extends DefaultState {
     	System.out.println("StatePlaying.start: warning: no panel, dry-run game without graphics!");
     	printedWarning = true;
     }
+    
     ////////////////////////////// set methods ///////////////////////////////////////////////////////////////
     ////////////////////////////// Actions that can be performed on the maze model ///////////////////////////
     protected void setCurrentPosition(int x, int y) {

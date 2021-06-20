@@ -85,8 +85,8 @@ public class BasicSensor implements DistanceSensor {
 		//This sensor is pointed North when:
 		//Robot is North and Sensor is Forwards
 		//Robot is South and Sensor is Backwards
-		//Robot is East and Sensor is Right
-		//Robot is West and Sensor is Left
+		//Robot is East and Sensor is right
+		//Robot is West and Sensor is left
 		if(currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.FORWARD)
 				|| currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.BACKWARD)
 				|| currentDirection.equals(CardinalDirection.East) && myDirection.equals(Direction.RIGHT)
@@ -106,8 +106,8 @@ public class BasicSensor implements DistanceSensor {
 		//This sensor is pointed South when:
 		//Robot is South and Sensor is Forwards
 		//Robot is North and Sensor is Backwards
-		//Robot is West and Sensor is Right
-		//Robot is East and Sensor is Left
+		//Robot is West and Sensor is right
+		//Robot is East and Sensor is left
 		if(currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.FORWARD)
 				|| currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.BACKWARD)
 				|| currentDirection.equals(CardinalDirection.West) && myDirection.equals(Direction.RIGHT)
@@ -127,12 +127,12 @@ public class BasicSensor implements DistanceSensor {
 		//This sensor is pointed East when:
 		//Robot is East and Sensor is Forwards
 		//Robot is West and Sensor is Backwards
-		//Robot is North and Sensor is Right
-		//Robot is South and Sensor is Left
+		//Robot is North and Sensor is Left
+		//Robot is South and Sensor is Right
 		if(currentDirection.equals(CardinalDirection.East) && myDirection.equals(Direction.FORWARD)
 				|| currentDirection.equals(CardinalDirection.West) && myDirection.equals(Direction.BACKWARD)
-				|| currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.RIGHT)
-				||currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.LEFT)) {
+				|| currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.LEFT)
+				||currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.RIGHT)) {
 			//When the Sensor is pointed East, the distance is the nearest wall's X coord - my X corrd
 			int wallX = x;
 			while(myMaze.getFloorplan().hasNoWall(wallX, y, CardinalDirection.East)) { //Walk East to find the nearest
@@ -148,12 +148,12 @@ public class BasicSensor implements DistanceSensor {
 		//This sensor is pointed East when:
 		//Robot is West and Sensor is Forwards
 		//Robot is East and Sensor is Backwards
-		//Robot is South and Sensor is Right
-		//Robot is North and Sensor is Left
+		//Robot is South and Sensor is Left
+		//Robot is North and Sensor is Right
 		if(currentDirection.equals(CardinalDirection.West) && myDirection.equals(Direction.FORWARD)
 				|| currentDirection.equals(CardinalDirection.East) && myDirection.equals(Direction.BACKWARD)
-				|| currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.RIGHT)
-				||currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.LEFT)) {
+				|| currentDirection.equals(CardinalDirection.South) && myDirection.equals(Direction.LEFT)
+				||currentDirection.equals(CardinalDirection.North) && myDirection.equals(Direction.RIGHT)) {
 			//When the Sensor is pointed West, the distance is my X coord - nearest wall's x coord
 			int wallX = x;
 			while(myMaze.getFloorplan().hasNoWall(wallX, y, CardinalDirection.West)) { //Walk West to find the nearest

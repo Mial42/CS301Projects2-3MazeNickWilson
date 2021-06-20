@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.desktop.ScreenSleepEvent;
+
 import generation.Maze;
 import gui.Robot.Direction;
 import gui.Robot.Turn;
@@ -43,6 +45,7 @@ public class WallFollower implements RobotDriver {
 		while(!myRobot.isAtExit()) {
 			try {
 				drive1Step2Exit(); //Try to drive 1 more step
+				//Thread.currentThread().sleep(1000);//For aesthetics and testing
 			} catch (Exception e) {
 				throw new Exception();//If out of power, throw an exception
 			}
@@ -58,6 +61,7 @@ public class WallFollower implements RobotDriver {
 	public boolean drive1Step2Exit() throws Exception {
 		//If at the exit, rotate to face the exit and return false
 		if(myRobot.isAtExit()) {
+			//Thread.currentThread().sleep(10000);//For testing
 			//Exit is either left, right, or forward
 			//Don't need to do anything if it's forward
 			if(myRobot.canSeeThroughTheExitIntoEternity(Direction.LEFT)) {

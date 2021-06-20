@@ -40,11 +40,11 @@ public class Wizard extends WallFollower implements RobotDriver {
 				if(myRobot.getCurrentDirection().equals(CardinalDirection.South)) {
 					myRobot.rotate(Turn.AROUND);
 				}
-				if(myRobot.getCurrentDirection().equals(CardinalDirection.East)) {
-					myRobot.rotate(Turn.RIGHT);
-				}
 				if(myRobot.getCurrentDirection().equals(CardinalDirection.West)) {
 					myRobot.rotate(Turn.LEFT);
+				}
+				if(myRobot.getCurrentDirection().equals(CardinalDirection.East)) {
+					myRobot.rotate(Turn.RIGHT);
 				}
 				myRobot.move(1);
 				break;
@@ -52,11 +52,11 @@ public class Wizard extends WallFollower implements RobotDriver {
 				if(myRobot.getCurrentDirection().equals(CardinalDirection.North)) {
 					myRobot.rotate(Turn.AROUND);
 				}
-				if(myRobot.getCurrentDirection().equals(CardinalDirection.West)) {
-					myRobot.rotate(Turn.RIGHT);
-				}
 				if(myRobot.getCurrentDirection().equals(CardinalDirection.East)) {
 					myRobot.rotate(Turn.LEFT);
+				}
+				if(myRobot.getCurrentDirection().equals(CardinalDirection.West)) {
+					myRobot.rotate(Turn.RIGHT);
 				}
 				myRobot.move(1);
 				break;
@@ -65,10 +65,10 @@ public class Wizard extends WallFollower implements RobotDriver {
 					myRobot.rotate(Turn.AROUND);
 				}
 				if(myRobot.getCurrentDirection().equals(CardinalDirection.North)) {
-					myRobot.rotate(Turn.RIGHT);
+					myRobot.rotate(Turn.LEFT);
 				}
 				if(myRobot.getCurrentDirection().equals(CardinalDirection.South)) {
-					myRobot.rotate(Turn.LEFT);
+					myRobot.rotate(Turn.RIGHT);
 				}
 				myRobot.move(1);
 				break;
@@ -77,10 +77,10 @@ public class Wizard extends WallFollower implements RobotDriver {
 					myRobot.rotate(Turn.AROUND);
 				}
 				if(myRobot.getCurrentDirection().equals(CardinalDirection.South)) {
-					myRobot.rotate(Turn.RIGHT);
+					myRobot.rotate(Turn.LEFT);
 				}
 				if(myRobot.getCurrentDirection().equals(CardinalDirection.North)) {
-					myRobot.rotate(Turn.LEFT);
+					myRobot.rotate(Turn.RIGHT);
 				}
 				myRobot.move(1);
 				break;

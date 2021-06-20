@@ -1,10 +1,20 @@
 package gui;
 import static org.junit.Assert.*;
 
+import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import generation.Maze;
+import generation.MazeFactory;
+import generation.StubOrder;
+import generation.Order.Builder;
+import gui.Constants.UserInput;
+import gui.Robot.Direction;
 import junit.extensions.TestSetup;
 /**
  * Tests the ability of the WallFollower algorithm to solve mazes of varying complexity through
@@ -12,6 +22,10 @@ import junit.extensions.TestSetup;
  * @author Nicholas Wilson
  */
 public class WallFollowerTest {
+	/**
+	 * A JFrame used to display the progress of the algorithm as it is run.
+	 */
+	protected JFrame displayFrame;
 	/**
 	 * The Controller used for testing.
 	 */
@@ -32,7 +46,11 @@ public class WallFollowerTest {
 	 * @param perfect (boolean that gives the Maze's perfect status.
 	 */
 	protected Maze makeMaze(int skill, boolean perfect) {
-		return null;
+		StubOrder myOrder = new StubOrder(skill, Builder.Prim, perfect, 56);
+		MazeFactory myMazeFactory = new MazeFactory();
+		myMazeFactory.order(myOrder);
+		myMazeFactory.waitTillDelivered();
+		return myOrder.getMaze();
 	}
 	/**
 	 * Create the robot, robotdriver and controller. Will need to do the maze setup itself within
@@ -40,43 +58,110 @@ public class WallFollowerTest {
 	 */
 	@BeforeEach
 	public void setUp() {
+		testController = new Controller();
+		testRobot = new BasicRobot(testController);
+		unInheritableSetup();
+		testRobotDriver.setRobot(testRobot);
+		testController.setRobotAndDriver(testRobot, testRobotDriver);
+		//Instantiates the JFrame and adds the controller and keylisteners to it
+		displayFrame = new JFrame();
+		displayFrame.add(testController.getPanel());
+		KeyListener kListener = new SimpleKeyListener(displayFrame, testController);
+		displayFrame.addKeyListener(kListener);
+		displayFrame.setSize(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT+22) ;
+		displayFrame.setVisible(true) ;
+		// focus should be on the JFrame of the MazeApplication and not on the maze panel
+		// such that the SimpleKeyListener kl is used
+		displayFrame.setFocusable(true) ;
+		//Start the game with the Controller
+		testController.start();
+	}
+	/**
+	 * Get rid of superfluous JFrames to avoid cluttering the screen.
+	 */
+	@AfterEach
+	public void tearDown() {
+		displayFrame.dispose();
+	}
+	/**
+	 * This method concentrates all the setup that changes with the Wizard subclass. This instantiates a
+	 * testRobotDriver as a WallFollower.
+	 */
+	protected void unInheritableSetup() {
+		testRobotDriver = new WallFollower();
+	}
+	/**
+	 * This method finishes setting up the RobotDriver, Robot, and Controller by swapping Controller
+	 * from generating to playing, adding the maze to the RobotDriver, and adding functional sensors to the robot
+	 * @param maze (a Maze that is required to finish the setup of the Robot, RobotDriver, Controller, etc)
+	 */
+	private void finishSetup(Maze maze) {
+		testRobotDriver.setMaze(maze);
+		testController.switchFromGeneratingToPlaying(maze);
+		testRobot.addDistanceSensor(new BasicSensor(), Direction.FORWARD);
+		testRobot.addDistanceSensor(new BasicSensor(), Direction.BACKWARD);
+		testRobot.addDistanceSensor(new BasicSensor(), Direction.LEFT);
+		testRobot.addDistanceSensor(new BasicSensor(), Direction.RIGHT);
 		
+		//Give the Robot lots of extra power so it can finish
+		//testRobot.setBatteryLevel(10000);
+		
+		//Toggle minimap so it's easier to see what's going on
+		testController.keyDown(UserInput.TOGGLELOCALMAP, 0);
+		testController.keyDown(UserInput.TOGGLEFULLMAP, 0);
+		testController.keyDown(UserInput.TOGGLESOLUTION, 0);
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 0 perfect maze.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testPerfect0Maze() {
+	public void testPerfect0Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(0, true);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 1 perfect maze.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testPerfect1Maze() {
+	public void testPerfect1Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(1, true);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 2 perfect maze.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testPerfect2Maze() {
+	public void testPerfect2Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(2, true);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 3 perfect maze.
 	 * Will probably run out of energy, not sure until I test it.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testPerfect3Maze() {
+	public void testPerfect3Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(3, true);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit OR that it is stopped and very low on energy (less than 4)
 		//Less than 4 because that's what the robot requires to move or turn left or right
 		//Robot shouldn't stop with lots of energy in the tank
@@ -84,31 +169,42 @@ public class WallFollowerTest {
 	/**
 	 * Tests that WallFollower can solve a skill 4 perfect maze.
 	 * Will probably run out of energy, not sure until I test it.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testPerfect4Maze() {
+	public void testPerfect4Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(4, true);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit OR that it is stopped and very low on energy (less than 4)
 		//Less than 4 because that's what the robot requires to move or turn left or right
 		//Robot shouldn't stop with lots of energy in the tank
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 0 imperfect maze.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testRooms0Maze() {
+	public void testRooms0Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(0, false);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 1 imperfect maze.
 	 */
 	@Test
-	public void testRooms1Maze() {
+	public void testRooms1Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(1, false);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
 	}
 	/**
@@ -116,9 +212,12 @@ public class WallFollowerTest {
 	 * Anshu, it will get stuck in a loop and definitely run out of energy.
 	 */
 	@Test
-	public void testRooms2Maze() {
+	public void testRooms2Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(2, false);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is low on energy (< 4) and stopped
 	}
 	/**
@@ -126,9 +225,12 @@ public class WallFollowerTest {
 	 * Will probably run out of energy, not sure until I test it.
 	 */
 	@Test
-	public void testRooms3Maze() {
+	public void testRooms3Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(3, false);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit OR that it is stopped and very low on energy (less than 4)
 		//Less than 4 because that's what the robot requires to move or turn left or right
 		//Robot shouldn't stop with lots of energy in the tank
@@ -138,9 +240,12 @@ public class WallFollowerTest {
 	 * Will probably run out of energy, not sure until I test it.
 	 */
 	@Test
-	public void testRooms4Maze() {
+	public void testRooms4Maze() throws Exception {
 		//Set up Maze
+		Maze testMaze = makeMaze(4, false);
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit OR that it is stopped and very low on energy (less than 4)
 		//Less than 4 because that's what the robot requires to move or turn left or right
 		//Robot shouldn't stop with lots of energy in the tank

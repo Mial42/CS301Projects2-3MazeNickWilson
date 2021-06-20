@@ -11,13 +11,12 @@ import org.junit.jupiter.api.Test;
  */
 public class WizardTest extends WallFollowerTest {
 	/**
-	 * Create the robot, RobotDriver and controller. Overridden because the
-	 * RobotDriver is a Wizard this time, not a base WallFollower. Will need to do the maze setup itself within
-	 * each method, because each method requires different mazes.
+	 * Overrides the instantiation of testRobotDriver from WallFollowerTest to
+	 * a Wizard rather than a WallFollower.
 	 */
-	@BeforeEach@Override
-	public void setUp() {
-		
+	@Override
+	protected void unInheritableSetup() {
+		testRobotDriver = new Wizard();
 	}
 	/**
 	 * Tests if Wizard can solve a skill 2 imperfect maze. WallFollower gets stuck,

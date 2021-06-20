@@ -137,6 +137,43 @@ public class SimpleScreens {
 		gc.setColor(blackWM);
 		centerString(gc, "Hit any key to restart", 300);
 	}
+	/**
+	 * Hardcoded loss screen for automatic playing. 
+	 * Show this if out of energy.
+	 * @param gc graphics is the off-screen image
+	 */
+	private void redrawFinishAutomatedLoss(Graphics gc) {
+		// produce blue background
+		drawBackground(gc);
+		// write the title 
+		updateFontAndColor(gc, largeBannerFont, goldWM);
+		centerString(gc, "You lost!", 100);
+		// write some extra blurb
+		updateFontAndColor(gc, smallBannerFont, greenWM);
+		centerString(gc, "You ran out of energy!", 160);
+		// write the instructions
+		gc.setColor(blackWM);
+		centerString(gc, "Hit any key to restart", 300);
+	}
+	/**
+	 * Hardcoded win screen for automatic playing. Displays path length
+	 * and energy consumption.
+	 * @param gc graphics is the off-screen image
+	 */
+	private void redrawFinishAutomatedWin(Graphics gc, int energyConsumed, int pathLength) {
+		// produce blue background
+		drawBackground(gc);
+		// write the title 
+		updateFontAndColor(gc, largeBannerFont, goldWM);
+		centerString(gc, "You won!", 100);
+		// write some extra blurb
+		updateFontAndColor(gc, smallBannerFont, greenWM);
+		centerString(gc, "You consumed " + energyConsumed + " / 2000 energy.", 160);
+		centerString(gc, "You travelled " + pathLength + " steps.", 160);
+		// write the instructions
+		gc.setColor(blackWM);
+		centerString(gc, "Hit any key to restart", 300);
+	}
     /**
      * Draws the generating screen, screen content is hard coded
      * @param panel holds the graphics for the off-screen image

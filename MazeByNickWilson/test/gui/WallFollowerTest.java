@@ -95,7 +95,7 @@ public class WallFollowerTest {
 	 * from generating to playing, adding the maze to the RobotDriver, and adding functional sensors to the robot
 	 * @param maze (a Maze that is required to finish the setup of the Robot, RobotDriver, Controller, etc)
 	 */
-	private void finishSetup(Maze maze) {
+	protected void finishSetup(Maze maze) {
 		testRobotDriver.setMaze(maze);
 		testController.switchFromGeneratingToPlaying(maze);
 		testRobot.addDistanceSensor(new BasicSensor(), Direction.FORWARD);

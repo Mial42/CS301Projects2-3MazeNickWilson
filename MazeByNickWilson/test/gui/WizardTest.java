@@ -3,6 +3,8 @@ package gui;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import generation.Maze;
+
 /**
  * Tests the ability of the Wizard algorithm to solve mazes of varying complexity through
  * its robot. Tests are very similar to the WallFollower class, except is should never fall into an infinite
@@ -23,20 +25,26 @@ public class WizardTest extends WallFollowerTest {
 	 * Wizard shouldn't.
 	 */
 	@Test
-	public void testRooms2Maze() {
-		//Set up Maze
-		//Run the algorithm
+	public void testRooms2Maze() throws Exception {
+				//Set up Maze
+		Maze testMaze = makeMaze(2, false);
+		finishSetup(testMaze);
+			//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
 	}
 	/**
-	 * Checks that Wizards can solve even very large Mazes quickly given infinite energy.
+	 * Checks that Wizards can solve even relatively large Mazes quickly given infinite energy.
 	 * Solves a size 15 maze with rooms. 
+	 * @throws Exception 
 	 */
 	@Test
-	public void testRooms15Maze() {
-		//Add a very large amount of energy to the robot.
+	public void testRooms15Maze() throws Exception {
+		Maze testMaze = makeMaze(10, false);
 		//Set up Maze
+		finishSetup(testMaze);
 		//Run the algorithm
+		testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
 	}
 }

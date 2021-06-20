@@ -28,7 +28,7 @@ public class StateWinning extends DefaultState {
     MazePanel panel;
     Controller control;
     
-    
+    private float energyConsumption;
     boolean started;
     int pathLength;
     
@@ -57,7 +57,15 @@ public class StateWinning extends DefaultState {
     	}
         // otherwise show finish screen with winning message
         // draw content on panel
-        view.redrawFinish(panel);
+        //System.out.println(pathLength);
+        if(controller.getRobot() == null || controller.getDriver() == null) //manual win
+        	view.redrawFinish(panel, false, true, -1, -1); 
+        else if(pathLength == -1) { //automated loss
+        	view.redrawFinish(panel, true, false, -1, -1);
+        }
+        else {//automated win
+        	view.redrawFinish(panel, true, true, energyConsumption, pathLength);
+        }
         // update screen with panel content
         panel.update();
 
@@ -82,6 +90,13 @@ public class StateWinning extends DefaultState {
     @Override
     public void setPathLength(int pathLength) {
         this.pathLength = pathLength;
+    }
+    /**
+     * This method sets my energy consumption to a given number.
+     * @param energy (the new energy value to set my energy consumption to)
+     */
+    public void setEnergyConsumption(float energy) {
+    	this.energyConsumption = energy;
     }
 }
 

@@ -206,10 +206,13 @@ public class Controller {
     /**
      * Switches the controller to the final screen
      * @param pathLength gives the length of the path
+     * @param energyConsumption gives the amount of energy consumed if playing in automatic mode
      */
-    public void switchFromPlayingToWinning(int pathLength) {
+    public void switchFromPlayingToWinning(int pathLength, float energyConsumption) {
         currentState = states[3];
         currentState.setPathLength(pathLength);
+        //System.out.println(pathLength);
+        ((StateWinning)currentState).setEnergyConsumption(energyConsumption);
         currentState.start(this, panel);
     }
     /**

@@ -110,14 +110,25 @@ public class SimpleScreens {
     /**
      * Draws the finish screen, screen content is hard coded
      * @param panel holds the graphics for the off-screen image
+     * @param automated (boolean saying whether or not the game was automated)
+     * @param win (boolean saying whether or not the game was won)
+     * @param energyConsumed (int how much energy was consumed)
+     * @param pathLength (int how long the path was)
      */
-	void redrawFinish(MazePanel panel) {
+	void redrawFinish(MazePanel panel, boolean automated, boolean win, float energyConsumed, int pathLength) {
 		Graphics g = panel.getBufferGraphics() ;
+		//System.out.println(automated + " " + win);
         if (null == g) {
             System.out.println(errorMsg) ;
         }
-        else {
+        else if (automated == false){//manual win
             redrawFinish(g);
+        }
+        else if (automated == true && win == true){//Automated win
+            redrawFinishAutomatedWin(g, energyConsumed, pathLength);
+        }
+        else {//automated loss
+        	redrawFinishAutomatedLoss(g);
         }
 	}
 	/**
@@ -160,7 +171,7 @@ public class SimpleScreens {
 	 * and energy consumption.
 	 * @param gc graphics is the off-screen image
 	 */
-	private void redrawFinishAutomatedWin(Graphics gc, int energyConsumed, int pathLength) {
+	private void redrawFinishAutomatedWin(Graphics gc, float energyConsumed, int pathLength) {
 		// produce blue background
 		drawBackground(gc);
 		// write the title 
@@ -169,7 +180,7 @@ public class SimpleScreens {
 		// write some extra blurb
 		updateFontAndColor(gc, smallBannerFont, greenWM);
 		centerString(gc, "You consumed " + energyConsumed + " / 2000 energy.", 160);
-		centerString(gc, "You travelled " + pathLength + " steps.", 160);
+		centerString(gc, "You travelled " + pathLength + " steps.", 220);
 		// write the instructions
 		gc.setColor(blackWM);
 		centerString(gc, "Hit any key to restart", 300);

@@ -168,7 +168,7 @@ public class StatePlaying extends DefaultState {
             walk(1);
             // check termination, did we leave the maze?
             if (isOutside(px,py)) {
-                control.switchFromPlayingToWinning(0);
+                control.switchFromPlayingToWinning(0, -1);
             }
             break;
         case LEFT: // turn left
@@ -181,7 +181,7 @@ public class StatePlaying extends DefaultState {
             walk(-1);
             // check termination, did we leave the maze?
             if (isOutside(px,py)) {
-                control.switchFromPlayingToWinning(0);
+                control.switchFromPlayingToWinning(0, -1);
             }
             break;
         case RETURNTOTITLE: // escape to title screen
@@ -263,22 +263,29 @@ public class StatePlaying extends DefaultState {
     	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.BACKWARD);
     	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.LEFT);
     	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.RIGHT);
-    	//Reset the Robot's energy levels and odometer
-    	control.getRobot().resetOdometer();
-    	control.getRobot().setBatteryLevel(2000); 
     	//Toggle the map for easier viewing 
     	keyDown(UserInput.TOGGLELOCALMAP, 0); 
     	keyDown(UserInput.TOGGLEFULLMAP, 0);
     	keyDown(UserInput.TOGGLESOLUTION, 0);
     	//Play the game 
-    	try{ 
+    	try{
+    		//System.out.println(control.getRobot().getBatteryLevel());
+        	//Reset the Robot's energy levels and odometer
+        	control.getRobot().resetOdometer();
+        	control.getRobot().setBatteryLevel(2000);
+        	((BasicRobot)control.getRobot()).resetStopped();//Unstop the robot
+        	//System.out.println(control.getRobot().hasStopped());
+    		//System.out.println(control.getRobot().getBatteryLevel());
     		control.getDriver().drive2Exit();
-    		control.switchFromPlayingToWinning(control.getRobot().getOdometerReading());
+    		//System.out.println("Automated Win");
+    		control.switchFromPlayingToWinning(control.getRobot().getOdometerReading(), 2000 - control.getRobot().getBatteryLevel());
     	}catch (Exception e) { //Exception happens if you run out of power
 			//If you run out of power, swap to the winning state
     		//-1 is to show that something went wrong. 
     		//Will also need to move over my energy consumption data
-    		control.switchFromPlayingToWinning(-1);
+    		//System.out.println("Automated Loss");
+    		//System.out.println(control.getRobot().getBatteryLevel());
+    		control.switchFromPlayingToWinning(-1, 0);
 		}
     }
     /**

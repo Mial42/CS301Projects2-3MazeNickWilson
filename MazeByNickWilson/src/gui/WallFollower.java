@@ -74,6 +74,7 @@ public class WallFollower implements RobotDriver {
 		}
 		//If out of power, throw an Exception
 		if(myRobot.getBatteryLevel() < 4) { //If not at the exit and power is less than 4, it's game over
+			//System.out.println(myRobot.getBatteryLevel());
 			throw new Exception();
 		}
 		//If not:

@@ -183,7 +183,14 @@ public class BasicRobot implements Robot {
 		// Set odometer to 0
 		myOdometer = 0;
 	}
-
+	/**
+	 * This method sets amStopped to false. Done to stop
+	 * the stopped condition from remaining true between sequential games.
+	 */
+	public void resetStopped() {
+		//set amStopped to false
+		amStopped = false;
+	}
 	@Override
 	public void rotate(Turn turn) {
 		//Change myCardinalDirection to the appropriate value

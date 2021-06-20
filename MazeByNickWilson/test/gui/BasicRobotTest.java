@@ -25,11 +25,11 @@ public class BasicRobotTest {
 	/**
 	 * The controller used for testing.
 	 */
-	private Controller testController;
+	protected Controller testController;
 	/**
 	 * The robot used for testing.
 	 */
-	private Robot testRobot;
+	protected Robot testRobot;
 	/**
 	 * Set up a controller and the appropriate robot
 	 */

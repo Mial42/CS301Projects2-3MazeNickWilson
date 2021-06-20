@@ -40,7 +40,7 @@ public class WallFollower implements RobotDriver {
 		//While I'm not at the exit and I have power to take one more step
 		//Take a step towards the exit
 		//If out of power, throw an exception
-		//If I've driven in a loop (heuristic: I have travelled more than the total cells in the Maze)
+		//If I've driven in a loop (heuristic: I have travelled more than the total cells in the Maze times 2)
 		//Return false
 		while(!myRobot.isAtExit()) {
 			try {
@@ -49,7 +49,7 @@ public class WallFollower implements RobotDriver {
 			} catch (Exception e) {
 				throw new Exception();//If out of power, throw an exception
 			}
-			if(myRobot.getOdometerReading() >= myMaze.getHeight() * myMaze.getWidth()) {//Have I travelled
+			if(myRobot.getOdometerReading() >= myMaze.getHeight() * myMaze.getWidth() * 2) {//Have I travelled
 				//Too many cells?
 				return false;
 			}

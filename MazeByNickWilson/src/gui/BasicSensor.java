@@ -37,7 +37,9 @@ import gui.Robot.Direction;
  * failure that brings it down. 
  *  
  * The power consumption for the repair operations is ignored.
- * 
+ * Responsibilities: Figure out the distance to obstacles in a relative direction from the
+ * robot the sensor is mounted on. For instance, tell how many empty spaces there are to the
+ * left/right/forwards/backwards.
  * Collaborators: BasicSensors are mounted on Robots. Since each sensor looks in a
  * cardinal direction, you can mount up to 4 sensors on a Robot (N, E, S, W). Communicates
  * energy consumption to the RobotDriver through the Robot.

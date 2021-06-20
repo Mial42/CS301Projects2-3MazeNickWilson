@@ -11,6 +11,8 @@ import generation.Maze;
  * Tests the ability of the Wizard algorithm to solve mazes of varying complexity through
  * its robot. Tests are very similar to the WallFollower class, except is should never fall into an infinite
  * loop, and should only ever fail due to lack of energy.
+ * Responsibilities: Ensure that Wizard can solve mazes,
+ * Collaborators: Controller, JFrame, Robot, RobotDriver
  * @author Nicholas Wilson
  */
 public class WizardTest extends WallFollowerTest {

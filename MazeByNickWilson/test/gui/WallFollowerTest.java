@@ -19,6 +19,10 @@ import junit.extensions.TestSetup;
 /**
  * Tests the ability of the WallFollower algorithm to solve mazes of varying complexity through
  * its robot.
+ * Responsibilities: Ensure that WallFollower can solve small and simple mazes,
+ * and throws the correct Exceptions/returns false correctly when it runs out of energy
+ * or gets stuck in an infinite loop.
+ * Collaborators: Controller, JFrame, Robot, RobotDriver
  * @author Nicholas Wilson
  */
 public class WallFollowerTest {

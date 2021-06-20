@@ -7,6 +7,7 @@ import gui.Robot.Turn;
 /**
  * Wizards implement the RobotDriver interface and so operate a Robot to escape a maze.
  * Uses the Distance Array to escape the maze.
+ * Responsibilities: Come up with the sequence of moves necessary to escape the Maze.
  * Collaborators: RobotDrivers control Robots. Wizards access the Maze through the Controller class.
  * anything about the Maze itself
  * @author Nicholas Wilson

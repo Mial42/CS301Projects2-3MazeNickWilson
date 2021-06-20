@@ -40,6 +40,12 @@ import gui.Constants.UserInput;
  * The rotation is calculated with polar coordinates (angle) towards a 
  * Cartesian coordinate system where a southbound direction is (dx,dy)=(0,1).
  * 
+ * Responsibilities: The robot's responsibilities are keeping track of
+ * energy level and odometer reading, moving and turning, and combining
+ * absolute location information (position and direction) with relative location
+ * information (left/right/forward/backward and obstacle distance) from 
+ * DistanceSensor.
+ * 
  * Collaborators: a controller that holds a maze to be explored, 
  * a robotdriver class that operates robot. This class uses DistanceSensors as well.
  * Cooperates with the program at large through a controller.

@@ -8,6 +8,7 @@ import gui.Robot.Turn;
 /**
  * WallFollowers implement the RobotDriver interface and so operate a Robot to escape a maze.
  * Uses the WallFollower algorithm to escape the maze.
+ * Responsibilities: Come up with the sequence of moves necessary to escape the Maze.
  * Collaborators: RobotDrivers control Robots. This algorithm doesn't need to know
  * anything about the Maze itself
  * @author Nicholas Wilson

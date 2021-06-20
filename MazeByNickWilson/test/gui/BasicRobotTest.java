@@ -3,6 +3,9 @@ import static org.junit.Assert.*;
 /**
  * Tests the individual methods of the BasicRobot.java class
  * Does not test RobotDriver at all.
+ * Responsibilities: Ensure that the BasicRobot methods are working
+ * in simple situations.
+ * Collaborators: Controller, Robot
  * @author Nicholas Wilson
  */
 

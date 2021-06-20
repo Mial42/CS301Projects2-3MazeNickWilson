@@ -263,16 +263,22 @@ public class StatePlaying extends DefaultState {
     	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.BACKWARD);
     	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.LEFT);
     	control.getRobot().addDistanceSensor(new BasicSensor(), Direction.RIGHT);
-    	//Toggle the map for easier viewing
-    	keyDown(UserInput.TOGGLELOCALMAP, 0);
+    	//Reset the Robot's energy levels and odometer
+    	control.getRobot().resetOdometer();
+    	control.getRobot().setBatteryLevel(2000); 
+    	//Toggle the map for easier viewing 
+    	keyDown(UserInput.TOGGLELOCALMAP, 0); 
     	keyDown(UserInput.TOGGLEFULLMAP, 0);
     	keyDown(UserInput.TOGGLESOLUTION, 0);
-    	//Play the game
-    	try{
+    	//Play the game 
+    	try{ 
     		control.getDriver().drive2Exit();
+    		control.switchFromPlayingToWinning(control.getRobot().getOdometerReading());
     	}catch (Exception e) { //Exception happens if you run out of power
 			//If you run out of power, swap to the winning state
-    		control.switchFromPlayingToWinning(control.getRobot().getOdometerReading());
+    		//-1 is to show that something went wrong. 
+    		//Will also need to move over my energy consumption data
+    		control.switchFromPlayingToWinning(-1);
 		}
     }
     /**

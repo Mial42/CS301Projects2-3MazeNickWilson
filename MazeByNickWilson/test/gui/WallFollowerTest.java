@@ -39,6 +39,21 @@ public class WallFollowerTest {
 	 */
 	protected RobotDriver testRobotDriver;
 	/**
+	 * Tells the program to check for an infinite loop.
+	 * Exists because Wizard doesn't have infinite loops, and 
+	 * I'd like to reuse tests between them. Set this to true for WallFollower in 
+	 * unInheritableSetup.
+	 */
+	protected boolean testInfiniteLoops = false;
+	/**
+	 * Tells the program to check for a power shortage.
+	 * Exists because Wizard solves mazes too quickly for power shortages, and 
+	 * I'd like to reuse tests between Wizard and WallFollower.
+	 * Set this to true for WallFollower in 
+	 * unInheritableSetup.
+	 */
+	protected boolean testPowerShortage = false;
+	/**
 	 * Creates a maze with a given size and perfect status.
 	 * Using seed 56 and Prim's algorithm, because per Anshu
 	 * Seed 56 Skill 2 Prim's algorithm will cause an infinite loop with WallFollower
@@ -89,6 +104,8 @@ public class WallFollowerTest {
 	 */
 	protected void unInheritableSetup() {
 		testRobotDriver = new WallFollower();
+		testInfiniteLoops = true;
+		testPowerShortage = true;
 	}
 	/**
 	 * This method finishes setting up the RobotDriver, Robot, and Controller by swapping Controller
@@ -121,8 +138,9 @@ public class WallFollowerTest {
 		Maze testMaze = makeMaze(0, true);
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
+		boolean hasCompletedMaze = testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
+		assertTrue(hasCompletedMaze);
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 1 perfect maze.
@@ -134,8 +152,9 @@ public class WallFollowerTest {
 		Maze testMaze = makeMaze(1, true);
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
+		boolean hasCompletedMaze = testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
+		assertTrue(hasCompletedMaze);
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 2 perfect maze.
@@ -147,12 +166,13 @@ public class WallFollowerTest {
 		Maze testMaze = makeMaze(2, true);
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
+		boolean hasCompletedMaze = testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
+		assertTrue(hasCompletedMaze);
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 3 perfect maze.
-	 * Will probably run out of energy, not sure until I test it.
+	 * Runs out of energy unless a Wizard.
 	 * @throws Exception 
 	 */
 	@Test
@@ -161,14 +181,29 @@ public class WallFollowerTest {
 		Maze testMaze = makeMaze(3, true);
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
-		//Assert that the robot is at the exit OR that it is stopped and very low on energy (less than 4)
-		//Less than 4 because that's what the robot requires to move or turn left or right
-		//Robot shouldn't stop with lots of energy in the tank
+		boolean hasCompletedMaze = false; 
+		boolean threwCorrectError = false; //Make sure error is getting thrown right.
+		try{
+			hasCompletedMaze = testRobotDriver.drive2Exit();
+		}
+		catch(Exception e){ //If it runs out of energy it should throw an exception.
+			//Assert that the robot is very low on energy (less than 4)
+			//Less than 4 because that's what the robot requires to move or turn left or right
+			//Robot shouldn't stop with lots of energy in the tank
+			//As it happens it runs out of energy per visual testing
+			assertTrue(testRobot.getBatteryLevel() < testRobot.getEnergyForStepForward());
+			threwCorrectError = true;
+		}
+		if(!testPowerShortage) { //If a Wizard, shoould still complete the Maze
+			assertTrue(hasCompletedMaze);
+		}
+		else {
+			assertTrue(threwCorrectError);
+		}
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 4 perfect maze.
-	 * Will probably run out of energy, not sure until I test it.
+	 * Runs out of energy unless a Wizard.
 	 * @throws Exception 
 	 */
 	@Test
@@ -177,10 +212,25 @@ public class WallFollowerTest {
 		Maze testMaze = makeMaze(4, true);
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
-		//Assert that the robot is at the exit OR that it is stopped and very low on energy (less than 4)
-		//Less than 4 because that's what the robot requires to move or turn left or right
-		//Robot shouldn't stop with lots of energy in the tank
+		boolean hasCompletedMaze = false;
+		boolean threwCorrectError = false; //Make sure error is getting thrown right.
+		try{
+			hasCompletedMaze = testRobotDriver.drive2Exit();
+		}
+		catch(Exception e){//If it runs out of energy it should throw an exception.
+			//Assert that the robot is very low on energy (less than 4)
+			//Less than 4 because that's what the robot requires to move or turn left or right
+			//Robot shouldn't stop with lots of energy in the tank
+			//As it happens it runs out of energy per visual testing
+			assertTrue(testRobot.getBatteryLevel() < testRobot.getEnergyForStepForward());
+			threwCorrectError = true;
+		}
+		if(!testPowerShortage) { //If a Wizard, shoould still complete the Maze
+			assertTrue(hasCompletedMaze);
+		}
+		else {
+			assertTrue(threwCorrectError);
+		}
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 0 imperfect maze.
@@ -192,8 +242,9 @@ public class WallFollowerTest {
 		Maze testMaze = makeMaze(0, false);
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
+		boolean hasCompletedMaze = testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
+		assertTrue(hasCompletedMaze);
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 1 imperfect maze.
@@ -204,25 +255,34 @@ public class WallFollowerTest {
 		Maze testMaze = makeMaze(1, false);
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
+		boolean hasCompletedMaze = testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
+		assertTrue(hasCompletedMaze);
 	}
 	/**
 	 * Tests if WallFollower can solve a skill 2 imperfect maze. Per 
 	 * Anshu, it will get stuck in a loop and definitely run out of energy.
+	 * I've given the robot massive additional energy so that it fails due to looping
+	 * rather than running out of energy.
 	 */
 	@Test
 	public void testRooms2Maze() throws Exception {
 		//Set up Maze
 		Maze testMaze = makeMaze(2, false);
 		finishSetup(testMaze);
+		testRobot.setBatteryLevel(999999);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
-		//Assert that the robot is low on energy (< 4) and stopped
+		boolean hasCompletedMaze = testRobotDriver.drive2Exit();
+		if(testInfiniteLoops) { //If testing for loops, should not have finished the maze
+			assertFalse(hasCompletedMaze);
+			}
+		else {
+			assertTrue(hasCompletedMaze);
+		}
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 3 imperfect maze.
-	 * Will probably run out of energy, not sure until I test it.
+	 * Runs out of energy unless a Wizard.
 	 */
 	@Test
 	public void testRooms3Maze() throws Exception {
@@ -230,14 +290,29 @@ public class WallFollowerTest {
 		Maze testMaze = makeMaze(3, false);
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
-		//Assert that the robot is at the exit OR that it is stopped and very low on energy (less than 4)
-		//Less than 4 because that's what the robot requires to move or turn left or right
-		//Robot shouldn't stop with lots of energy in the tank
+		boolean hasCompletedMaze = false;
+		boolean threwCorrectError = false; //Make sure error is getting thrown right.
+		try{
+			hasCompletedMaze = testRobotDriver.drive2Exit();
+		}
+		catch(Exception e){//If it runs out of energy it should throw an exception.
+			//Assert that the robot is very low on energy (less than 4)
+			//Less than 4 because that's what the robot requires to move or turn left or right
+			//Robot shouldn't stop with lots of energy in the tank
+			//As it happens it runs out of energy per visual testing
+			assertTrue(testRobot.getBatteryLevel() < testRobot.getEnergyForStepForward());
+			threwCorrectError = true;
+		}
+		if(!testPowerShortage) { //If a Wizard, shoould still complete the Maze
+			assertTrue(hasCompletedMaze);
+		}
+		else {
+			assertTrue(threwCorrectError);
+		}
 	}
 	/**
 	 * Tests that WallFollower can solve a skill 4 imperfect maze.
-	 * Will probably run out of energy, not sure until I test it.
+	 * Runs out of energy unless a Wizard.
 	 */
 	@Test
 	public void testRooms4Maze() throws Exception {
@@ -245,9 +320,25 @@ public class WallFollowerTest {
 		Maze testMaze = makeMaze(4, false);
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
-		//Assert that the robot is at the exit OR that it is stopped and very low on energy (less than 4)
-		//Less than 4 because that's what the robot requires to move or turn left or right
-		//Robot shouldn't stop with lots of energy in the tank
+		boolean hasCompletedMaze = false;
+		boolean threwCorrectError = false; //Make sure error is getting thrown right.
+
+		try{
+			hasCompletedMaze = testRobotDriver.drive2Exit();
+		}
+		catch(Exception e){//If it runs out of energy it should throw an exception.
+			//Assert that the robot is very low on energy (less than 4)
+			//Less than 4 because that's what the robot requires to move or turn left or right
+			//Robot shouldn't stop with lots of energy in the tank
+			//As it happens it runs out of energy per visual testing
+			assertTrue(testRobot.getBatteryLevel() < testRobot.getEnergyForStepForward());
+			threwCorrectError = true;
+		}
+		if(!testPowerShortage) { //If a Wizard, shoould still complete the Maze
+			assertTrue(hasCompletedMaze);
+		}
+		else {
+			assertTrue(threwCorrectError);
+		}
 	}
 }

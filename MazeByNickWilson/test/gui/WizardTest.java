@@ -1,5 +1,7 @@
 package gui;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,30 +23,18 @@ public class WizardTest extends WallFollowerTest {
 		testRobotDriver = new Wizard();
 	}
 	/**
-	 * Tests if Wizard can solve a skill 2 imperfect maze. WallFollower gets stuck,
-	 * Wizard shouldn't.
-	 */
-	@Test
-	public void testRooms2Maze() throws Exception {
-				//Set up Maze
-		Maze testMaze = makeMaze(2, false);
-		finishSetup(testMaze);
-			//Run the algorithm
-		testRobotDriver.drive2Exit();
-		//Assert that the robot is at the exit
-	}
-	/**
 	 * Checks that Wizards can solve even relatively large Mazes quickly given infinite energy.
-	 * Solves a size 15 maze with rooms. 
+	 * Solves a size 10 maze with rooms. 
 	 * @throws Exception 
 	 */
 	@Test
-	public void testRooms15Maze() throws Exception {
+	public void testRooms10Maze() throws Exception {
 		Maze testMaze = makeMaze(10, false);
 		//Set up Maze
 		finishSetup(testMaze);
 		//Run the algorithm
-		testRobotDriver.drive2Exit();
+		boolean hasCompletedMaze = testRobotDriver.drive2Exit();
 		//Assert that the robot is at the exit
+		assertTrue(hasCompletedMaze);
 	}
 }
